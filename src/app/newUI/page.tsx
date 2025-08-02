@@ -1,21 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { cn } from "@/libs/utils";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
-import {
-  createContext,
-  type HTMLAttributes,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/libs/utils";
+import { type HTMLAttributes, useEffect, useMemo, useState } from "react";
 import { ChatRoom } from "./ChatRoom";
 import { Clock } from "./Clock";
+import { EnterGame } from "./EnterGame";
+import { type CardTypeTemp, PlayerProvider, usePlayer } from "./PlayerContext";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function NewUIPage() {
   return (
@@ -35,33 +30,11 @@ export default function NewUIPage() {
   );
 }
 
-type CardType = {
-  id: string;
-};
-
-type PlayerCtxType = {
-  name: string;
-  room: string;
-  cards: CardType[];
-  setName: (name: string) => void;
-  setRoom: (name: string) => void;
-  setCards: (cards: CardType[] | ((prev: CardType[]) => CardType[])) => void;
-};
-
-const PlayerContext = createContext({} as PlayerCtxType);
-
-const usePlayer = () => {
-  const context = useContext(PlayerContext);
-  if (!context) {
-    throw new Error("useName must be used within a NameContext Provider");
-  }
-  return context;
-};
-
 const Board = () => {
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useLocalStorage("playerName", "");
+
   const [room, setRoom] = useState("");
-  const [cards, setCards] = useState<CardType[]>([
+  const [cards, setCards] = useState<CardTypeTemp[]>([
     { id: "1" },
     { id: "2" },
     { id: "3" },
@@ -69,15 +42,13 @@ const Board = () => {
 
   return (
     <>
-      <PlayerContext.Provider
-        value={{ name, cards, room, setName, setCards, setRoom }}
-      >
+      <PlayerProvider value={{ name, cards, room, setName, setCards, setRoom }}>
         <WindowContainer className="size-full">
           <WindowHeader>Card Board</WindowHeader>
           <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
         </WindowContainer>
         <Clock />
-      </PlayerContext.Provider>
+      </PlayerProvider>
       <ChatRoom name={name} />
     </>
   );
@@ -98,53 +69,12 @@ const GameRoom = () => {
       <Button
         className="-translate-x-1/2 absolute bottom-0 left-1/2"
         onClick={() => {
-          setCards((prev: CardType[]) => prev.slice(0, prev.length - 1));
+          setCards((prev: CardTypeTemp[]) => prev.slice(0, prev.length - 1));
         }}
       >
         Pop a card!
       </Button>
     </>
-  );
-};
-
-const EnterGame = () => {
-  const { setName } = usePlayer();
-  const [inputName, setInputName] = useState("");
-  const [room, setRoom] = useState("");
-
-  const handleSetName = () => {
-    setName(inputName);
-  };
-
-  return (
-    <div className="flex size-full items-center justify-center gap-6">
-      <div className="flex gap-6">
-        <Image
-          src="/carddeck.png"
-          alt="carddeck"
-          width={150}
-          height={150}
-          className="aspect-square size-[150px] opacity-80 bg-blend-multiply"
-        />
-        <div className="w-px flex-1 bg-secondary"></div>
-        <div className="flex flex-col gap-2 pl-12">
-          <div className="flex flex-col">
-            <p>Name:</p>
-            <Input
-              value={inputName}
-              onChange={(e) => setInputName(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col">
-            <p>Room Id:</p>
-            <Input value={room} onChange={(e) => setRoom(e.target.value)} />
-          </div>
-          <Button className="mt-2" onClick={handleSetName}>
-            Enter
-          </Button>
-        </div>
-      </div>
-    </div>
   );
 };
 
@@ -197,7 +127,7 @@ const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
   );
 };
 
-export function RandomCard({ card }: { card: CardType }) {
+export function RandomCard({ card }: { card: CardTypeTemp }) {
   const [rotation, setRotation] = useState<number | null>(null);
 
   useEffect(() => {
@@ -209,14 +139,14 @@ export function RandomCard({ card }: { card: CardType }) {
   return <Card card={card} rotate={rotation} />;
 }
 
-const Card = ({ card, rotate }: { card: CardType; rotate: number }) => {
+const Card = ({ card, rotate }: { card: CardTypeTemp; rotate: number }) => {
   const cardVariants = useMemo(
     () => ({
       initial: { opacity: 0, x: "100%", rotate },
       animate: { opacity: 1, x: 0, rotate: rotate / 20 },
       exit: { opacity: 0, y: "25%", rotate: rotate * 0.5 },
     }),
-    [rotate],
+    [rotate]
   );
 
   return (
