@@ -20,31 +20,6 @@ export const updateCard = mutation({
   },
 });
 
-// Wipe cards in DB and insert new cards
-export const updateAllCards = mutation({
-  args: {
-    newCards: v.array(v.object({ _id: v.id("cards"), ...cardSchema })),
-  },
-  handler: async (ctx, args) => {
-    const existingCards = await ctx.db.query("cards").collect();
-    const existingIds = new Set(existingCards.map((card) => card._id));
-
-    // This logic ensures if a card exists, the same card is updated rather than recreated
-    for (const card of args.newCards) {
-      if (existingIds.has(card._id)) {
-        await ctx.db.patch(card._id, { ...card });
-        existingIds.delete(card._id);
-      } else {
-        await ctx.db.insert("cards", card);
-      }
-    }
-
-    for (const id of existingIds) {
-      await ctx.db.delete(id);
-    }
-  },
-});
-
 // Move a single card to the top of the stack visually (z-index)
 export const moveCardToTop = mutation({
   args: {
@@ -71,7 +46,7 @@ export const shuffleCards = mutation({
   },
 });
 
-// New game
+// New game: wipe DB and insert a new set of cards
 export const newGame = mutation({
   handler: async (ctx) => {
     const newCards = [
@@ -84,5 +59,30 @@ export const newGame = mutation({
       await ctx.db.delete(card._id);
     }
     await Promise.all(newCards.map((card) => ctx.db.insert("cards", card)));
+  },
+});
+
+// Wipe cards in DB and insert new cards (try avoid using this in favour of the other functions, but it's here if needed)
+export const updateAllCards = mutation({
+  args: {
+    newCards: v.array(v.object({ _id: v.id("cards"), ...cardSchema })),
+  },
+  handler: async (ctx, args) => {
+    const existingCards = await ctx.db.query("cards").collect();
+    const existingIds = new Set(existingCards.map((card) => card._id));
+
+    // This logic ensures if a card exists, the same card is updated rather than recreated
+    for (const card of args.newCards) {
+      if (existingIds.has(card._id)) {
+        await ctx.db.patch(card._id, { ...card });
+        existingIds.delete(card._id);
+      } else {
+        await ctx.db.insert("cards", card);
+      }
+    }
+
+    for (const id of existingIds) {
+      await ctx.db.delete(id);
+    }
   },
 });
