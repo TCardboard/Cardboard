@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "concurrently \"pnpm dev:next\" \"pnpm dev:convex\"",
+    "dev:next": "next dev --turbopack",
+    "dev:convex": "convex dev",
     "dev:g": "pnpm generate:route & next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -48,6 +50,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^9.2.0",
     "drizzle-kit": "^0.30.5",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.6",
