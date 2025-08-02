@@ -2,8 +2,8 @@
 
 import { useQuery } from "convex/react";
 import FlipCard from "@/components/(PlayingCard)/FlipCard";
-import Button from "@/components/button";
 import { AppSidebar } from "@/components/app-sidebar";
+import Button from "@/components/button";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { api } from "../../convex/_generated/api";
 
@@ -24,7 +24,7 @@ export default function Home() {
     <SidebarProvider>
       <AppSidebar />
       <main className="flex flex-1 flex-col p-4">
-        <div className="flex min-h-screen flex-col items-center justify-between p-24 gap-6">
+        <div className="flex min-h-screen flex-col items-center justify-between gap-6 p-24">
           <div className="bg-white">
             tasks:{" "}
             {tasks?.map(({ _id, text }) => (
@@ -32,10 +32,13 @@ export default function Home() {
             ))}
           </div>
 
-
           <div className="flex gap-4">
             <Button label="Reshuffle" onClick={handleReshuffle} />
-            <Button label="New Game" variant="secondary" onClick={handleNewGame} />
+            <Button
+              label="New Game"
+              variant="secondary"
+              onClick={handleNewGame}
+            />
           </div>
         </div>
       </main>
