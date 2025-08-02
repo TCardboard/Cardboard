@@ -72,7 +72,7 @@ const Board = () => {
       <PlayerContext.Provider
         value={{ name, cards, room, setName, setCards, setRoom }}
       >
-        <WindowContainer className="size-full">
+        <WindowContainer className="size-full ">
           <WindowHeader>Card Board</WindowHeader>
           <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
         </WindowContainer>
