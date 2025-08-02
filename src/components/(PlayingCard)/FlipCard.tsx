@@ -63,7 +63,7 @@ export default function FlipCard({ front, back }: FlipCardProps) {
         bringToFront();
       }}
       onMouseDown={handleMouseDown}
-      className="absolute bg-transparent border-none cursor-grab h-48 p-0 perspective w-35 active:cursor-grabbing"
+      className="perspective absolute h-48 w-35 cursor-grab border-none bg-transparent p-0 active:cursor-grabbing"
       style={{ left: position.x, top: position.y, zIndex }}
     >
       <div
