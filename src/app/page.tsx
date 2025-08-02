@@ -1,16 +1,10 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { v } from "convex/values";
+import FlipCard from "@/components/(PlayingCard)/FlipCard";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-<<<<<<< HEAD
-import { mutation } from "../../convex/_generated/server";
-=======
->>>>>>> 30fd75b7bf60dabb95e7300aca1ccc2c41580e8d
-
-import FlipCard from "@/components/(PlayingCard)/FlipCard";
 
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
@@ -21,7 +15,10 @@ export default function Home() {
       <main className="flex flex-1 flex-col p-4">
         <div className="flex min-h-screen flex-col items-center justify-between p-24">
           <div className="bg-white">
-            tasks: {tasks?.map(({ _id, text }) => <div key={_id}>{text}</div>)}
+            tasks:{" "}
+            {tasks?.map(({ _id, text }) => (
+              <div key={_id}>{text}</div>
+            ))}
           </div>
 
           <FlipCard
