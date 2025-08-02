@@ -11,11 +11,11 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { cn } from "@/libs/utils";
 import { ease } from "../ease";
 import type { Route } from "./route/index.generated";
 import { ROUTE_SYSTEM } from "./route/index.generated";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 type DevRouteSetting = {
   open: boolean;
@@ -119,7 +119,7 @@ const RouteSheet = () => {
       animate={{ x: 0 }}
       exit={{ x: "-100%" }}
       transition={{ duration: 1, ease: ease.outExpo }}
-      className="fixed top-0 left-0 z-50 flex h-dvh w-[450px] flex-col border-neutral-900 border-r bg-black font-[Geist] font-light text-white"
+      className="fixed top-0 left-0 z-50 flex h-dvh w-[450px] flex-col border-neutral-900 border-r bg-black font-light text-white font-mono"
     >
       <DevRouteSetting />
       <div className="flex h-full flex-col overflow-y-auto pb-32">

@@ -2,8 +2,15 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  tasks: defineTable({
-    isCompleted: v.boolean(),
-    text: v.string(),
+  cards: defineTable({
+    playerId: v.union(v.id("users"), v.null()),
+    type: v.string(),
+    visible: v.boolean(),
+    x: v.float64(),
+    y: v.float64(),
+    z: v.float64(),
+  }),
+  users: defineTable({
+    name: v.string(),
   }),
 });
