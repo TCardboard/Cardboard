@@ -69,21 +69,21 @@ export default function FlipCard({ front, back }: FlipCardProps) {
         }
       }}
       onMouseDown={handleMouseDown}
-      className="absolute z-50 h-48 w-35 cursor-grab perspective bg-transparent p-0 active:cursor-grabbing"
+      className="absolute h-48 w-35 cursor-grab perspective bg-transparent p-0 active:cursor-grabbing"
       style={{ left: position.x, top: position.y, zIndex }}
     >
       <div
-        className={`preserve-3d relative h-full w-full transition-transform duration-700 ${
+        className={`preserve-3d relative h-full w-full transition-transform duration-700 rounded-xl ${
           flipped ? 'rotate-y-180' : ''
-        }`}
+        } ${dragging ? 'shadow-[0_8px_30px_rgba(0,0,0,0.4)]' : 'shadow-2xl'}`}
       >
         {/* Front Face */}
-        <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl bg-blue-500 text-white shadow-xl">
+        <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl bg-blue-500 text-white">
           {front}
         </div>
 
         {/* Back Face */}
-        <div className="backface-hidden absolute flex h-full w-full rotate-y-180 transform items-center justify-center rounded-xl bg-red-500 text-white shadow-xl">
+        <div className="backface-hidden absolute flex h-full w-full rotate-y-180 transform items-center justify-center rounded-xl bg-red-500 text-white shadow-inner">
           {back}
         </div>
       </div>
