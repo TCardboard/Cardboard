@@ -15,8 +15,8 @@ export default function Button({ label, className, ...props }: ButtonProps) {
     text-black
     bg-[#d4d0c8]
     border border-[#808080]
-    shadow-[inset_-1px_-1px_0px_#fff,inset_1px_1px_0px_#404040]
-    hover:shadow-[inset_1px_1px_0px_#fff,inset_-1px_-1px_0px_#404040]
+    shadow-[inset_1px_1px_0px_#fff,inset_-1px_-1px_0px_#404040]
+    hover:shadow-[inset_-1px_-1px_0px_#fff,inset_1px_1px_0px_#404040]
     active:translate-y-[1px]
     transition-all
     rounded-sm
