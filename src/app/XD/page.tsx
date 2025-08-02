@@ -3,8 +3,8 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { mutation } from "../../convex/_generated/server";
+import { api } from "../../../convex/_generated/api";
+import { mutation } from "../../../convex/_generated/server";
 import { v } from "convex/values";
 
 const createTask = mutation({
@@ -34,3 +34,12 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
+const Card = ({ title, content }: { title: string; content: string }) => {
+  return (
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-2">{title}</h2>
+      <p className="text-gray-700">{content}</p>
+    </div>
+  );
+};
