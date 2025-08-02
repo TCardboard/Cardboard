@@ -24,4 +24,3 @@ export default defineSchema({
   users: defineTable(userSchema),
   messages: defineTable(messageSchema),
 });
-
