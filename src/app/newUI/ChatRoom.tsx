@@ -31,11 +31,22 @@ export const ChatRoom = ({ name }: { name: string }) => {
     }
   };
 
+  const [isMovedDown, setIsMovedDown] = useState(false);
+
+  const handleTogglePosition = () => {
+    setIsMovedDown((prev) => !prev);
+  };
+
   if (!name) return null;
 
   return (
-    <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px]">
-      <WindowHeader>Game Room</WindowHeader>
+    <WindowContainer className={`absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300 ${
+      isMovedDown ? 'translate-y-71.5' : ''
+    }`}>
+      <WindowHeader className="flex justify-between hover:cursor-pointer " onClick={handleTogglePosition}>
+        Game Room 
+        <button type="button">--</button>
+      </WindowHeader>
       <WindowContent>
         <div className="max-h-[200px] min-h-[200px] space-y-1 overflow-y-scroll">
           {(messages ?? []).map((chat, index) => (
