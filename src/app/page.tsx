@@ -1,9 +1,9 @@
 "use client";
 
+import { useQuery } from "convex/react";
 import FlipCard from "@/components/(PlayingCard)/FlipCard";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export default function Home() {
@@ -21,18 +21,9 @@ export default function Home() {
             ))}
           </div>
 
-          <FlipCard
-            front={<div className="font-semibold text-xl ">Front</div>}
-            back={<div className="font-semibold text-xl ">Back</div>}
-          />
-          <FlipCard
-            front={<div className="font-semibold text-xl ">Front</div>}
-            back={<div className="font-semibold text-xl ">Back</div>}
-          />
-          <FlipCard
-            front={<div className="font-semibold text-xl ">Front</div>}
-            back={<div className="font-semibold text-xl ">Back</div>}
-          />
+          <FlipCard cardID="4-hearts" />
+          <FlipCard cardID="5-hearts" />
+          <FlipCard cardID="6-hearts" />
         </div>
       </main>
     </SidebarProvider>
