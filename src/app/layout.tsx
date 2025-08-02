@@ -1,3 +1,4 @@
+import "@xyflow/react/dist/style.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
@@ -29,12 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.className} ${geistMono.variable} antialiased`}
+        className={`${manrope.className} ${geistMono.variable} h-dhw w-dvw antialiased`}
       >
         {process.env.NODE_ENV === "development" && <RoutingDevTools />}
-        <ConvexClientProvider>
-          <TanstackClientProvider>{children}</TanstackClientProvider>
-        </ConvexClientProvider>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>
     </html>
   );

@@ -1,1 +1,9 @@
-{"message": ["send", "help"], "user": "nate"}
+{
+  "id": "a",
+  "type": "card",
+  "position": {
+    "x": 74.5,
+    "y": 17.5
+  },
+  "data": {}
+}
