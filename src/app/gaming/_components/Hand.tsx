@@ -3,13 +3,16 @@
 import { useDroppable } from "@dnd-kit/core";
 import type React from "react";
 import { cn } from "@/components/libs/utils";
+import type { CardType } from "@/utils/types";
+import HandCard from "./HandCard";
 
 export type HandProps = {
   id: string;
-  children?: React.ReactNode;
+  hand: CardType[];
+  setHand: React.Dispatch<React.SetStateAction<CardType[]>>;
 };
 
-export default function Hand({ id, children }: HandProps) {
+export default function Hand({ id, hand, setHand }: HandProps) {
   const { isOver, setNodeRef } = useDroppable({ id });
   return (
     <div
@@ -21,8 +24,19 @@ export default function Hand({ id, children }: HandProps) {
           : "border-gray-300 bg-gray-100"
       )}
     >
-      <div className="mr-2 font-bold">Hand</div>
-      {children}
+      <div className="font-bold">Hand</div>
+      {hand.map((card) => (
+        <HandCard
+          key={card._id}
+          id={card._id}
+          card={card}
+          setCard={(updatedCard: CardType) =>
+            setHand((prev: CardType[]) =>
+              prev.map((c) => (c._id === card._id ? updatedCard : c))
+            )
+          }
+        />
+      ))}
     </div>
   );
 }

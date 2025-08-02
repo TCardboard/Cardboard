@@ -1,12 +1,13 @@
 import { useDroppable } from "@dnd-kit/core";
-import type { CanvasCardProps } from "./CanvasCard";
+import type { CardType } from "@/utils/types";
 import CanvasCard from "./CanvasCard";
 
 type CanvasProps = {
-  cards: CanvasCardProps[];
+  cards: CardType[];
+  setCards: (cards: CardType[]) => void;
 };
 
-export default function Canvas({ cards }: CanvasProps) {
+export default function Canvas({ cards, setCards }: CanvasProps) {
   const { setNodeRef } = useDroppable({ id: "canvas" });
 
   return (
@@ -16,14 +17,13 @@ export default function Canvas({ cards }: CanvasProps) {
     >
       {cards.map((card) => (
         <CanvasCard
-          key={card.id}
-          id={card.id}
-          x={card.x}
-          y={card.y}
-          image={card.image}
-        >
-          {card.children}
-        </CanvasCard>
+          key={card._id}
+          id={card._id}
+          card={card}
+          setCard={(updatedCard) =>
+            setCards(cards.map((c) => (c._id === card._id ? updatedCard : c)))
+          }
+        />
       ))}
     </div>
   );

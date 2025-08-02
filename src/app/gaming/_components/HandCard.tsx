@@ -1,13 +1,15 @@
 import { useDraggable } from "@dnd-kit/core";
 import { cn } from "@/libs/utils";
+import type { CardType } from "@/utils/types";
+import FlipCard from "./FlipCard";
 
 type HandCardProps = {
   id: string;
-  image?: string;
-  children?: React.ReactNode;
+  card: CardType;
+  setCard: (card: CardType) => void;
 };
 
-export default function HandCard({ id, image, children }: HandCardProps) {
+export default function HandCard({ id, card, setCard }: HandCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
 
@@ -28,11 +30,16 @@ export default function HandCard({ id, image, children }: HandCardProps) {
         "h-28 w-20 rounded-lg shadow-md",
         isDragging
           ? "z-50 cursor-grab bg-blue-200 transition-none"
-          : "bg-gray-200 transition-shadow duration-200",
-        image ? `bg-[url(${image})] bg-center bg-cover` : "bg-gray-200"
+          : "bg-gray-200 transition-shadow duration-200"
       )}
     >
-      {children}
+      <FlipCard
+        isDragging={isDragging}
+        front={<p>{`Front Content ${card._id}`}</p>}
+        back={<p>Back Content</p>}
+        card={card}
+        setCard={setCard}
+      />
     </div>
   );
 }
