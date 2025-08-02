@@ -5,25 +5,30 @@ import { cn } from "@/components/libs/utils";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   label: string;
-  variant?: "primary" | "secondary";
 };
 
 export default function Button({
   label,
-  variant = "primary",
   className,
   ...props
 }: ButtonProps) {
-  const baseStyles =
-    "px-4 py-2 rounded-lg font-semibold transition-colors duration-200";
-  const variants = {
-    primary: "bg-black text-white hover:bg-gray-800",
-    secondary: "bg-white text-black border border-black hover:bg-gray-100",
-  };
+  const xpStyles = `
+    px-3 py-1.5
+    text-sm
+    font-sans
+    text-black
+    bg-[#d4d0c8]
+    border border-[#808080]
+    shadow-[inset_-1px_-1px_0px_#fff,inset_1px_1px_0px_#404040]
+    hover:shadow-[inset_1px_1px_0px_#fff,inset_-1px_-1px_0px_#404040]
+    active:translate-y-[1px]
+    transition-all
+    rounded-sm
+  `;
 
   return (
     <button
-      className={cn(baseStyles, variants[variant], className)}
+      className={cn(xpStyles, className)}
       {...props}
     >
       {label}
