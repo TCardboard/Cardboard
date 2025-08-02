@@ -1,27 +1,27 @@
 import { useDraggable } from "@dnd-kit/core";
 import { cn } from "@/libs/utils";
+import type { CardType } from "@/utils/types";
+import FlipCard from "./FlipCard";
 
 export type CanvasCardProps = {
   id: string;
-  x: number;
-  y: number;
   image?: string;
-  children?: React.ReactNode;
+  card: CardType;
+  setCard: (card: CardType) => void;
 };
 
 export default function CanvasCard({
   id,
-  x,
-  y,
   image,
-  children,
+  card,
+  setCard,
 }: CanvasCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
 
   const style = {
-    left: x + (transform?.x ?? 0),
-    top: y + (transform?.y ?? 0),
+    left: card.x + (transform?.x ?? 0),
+    top: card.y + (transform?.y ?? 0),
   };
 
   return (
@@ -39,7 +39,13 @@ export default function CanvasCard({
         image ? `bg-[url(${image})] bg-center bg-cover` : "bg-gray-200"
       )}
     >
-      {children}
+      <FlipCard
+        isDragging={isDragging}
+        front={<p>Front Content</p>}
+        back={<p>Back Content</p>}
+        card={card}
+        setCard={setCard}
+      />
     </div>
   );
 }
