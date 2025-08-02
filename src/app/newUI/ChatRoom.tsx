@@ -57,7 +57,7 @@ export const ChatRoom = ({ name }: { name: string }) => {
             "max-h-[200px] min-h-[200px] space-y-1 overflow-y-scroll",
             isMovedDown && "min-h-0 py-0 transition "
           )}
-        >
+        > 
           {(messages ?? []).map((chat, index) => (
             <div key={index} className="w-full break-words">
               <span className="font-bold">{chat.user}: </span>
