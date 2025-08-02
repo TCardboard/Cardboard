@@ -27,6 +27,7 @@
 		"better-auth": "^1.2.10",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"convex": "^1.25.4",
 		"drizzle-orm": "^0.41.0",
 		"lucide-react": "^0.536.0",
 		"motion": "^12.5.0",
