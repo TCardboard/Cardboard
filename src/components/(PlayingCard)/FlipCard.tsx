@@ -1,7 +1,6 @@
-'use client';
+"use client";
 
-import { CardType } from "@/utils/types";
-import { toBeVisible } from "@testing-library/jest-dom/matchers";
+import type { CardType } from "@/utils/types";
 import { useEffect, useRef, useState } from "react";
 
 let globalZIndex = 50;
@@ -13,16 +12,20 @@ interface FlipCardProps {
   setCard: (card: CardType) => void;
 }
 
-export default function FlipCard({ front, back, card, setCard }: FlipCardProps) {
-  const [flipped, setFlipped] = useState(false);
+// Nate: I made just enough hacks to get this to compile - Kevin when you convert this to DND-Kit, plz connect it to the DB properly :heart:
+// Currently dragging is buggy and z-index isn't connected at all (has its own special function)
+export default function FlipCard({
+  front,
+  back,
+  card,
+  setCard,
+}: FlipCardProps) {
   const [dragging, setDragging] = useState(false);
   const [zIndex, setZIndex] = useState(0);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     if (card) {
       setZIndex(card.z ?? 0);
-      setPosition({ x: card.x, y: card.y });
     }
   }, [card]);
 
@@ -38,19 +41,17 @@ export default function FlipCard({ front, back, card, setCard }: FlipCardProps) 
     bringToFront();
     setDragging(true);
     dragStart.current = {
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
+      x: e.clientX - card.x,
+      y: e.clientY - card.y,
     };
   };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!dragging) return;
-      const newPos = {
-        x: e.clientX - dragStart.current.x,
-        y: e.clientY - dragStart.current.y,
-      };
-      setPosition(newPos);
+      const x = e.clientX - dragStart.current.x;
+      const y = e.clientY - dragStart.current.y;
+      setCard({ ...card, x, y });
     };
 
     const handleMouseUp = () => {
@@ -58,8 +59,8 @@ export default function FlipCard({ front, back, card, setCard }: FlipCardProps) 
       // Save updated card state to parent
       setCard({
         ...card,
-        x: position.x,
-        y: position.y,
+        x: card.x,
+        y: card.y,
         z: zIndex,
       });
     };
@@ -71,35 +72,33 @@ export default function FlipCard({ front, back, card, setCard }: FlipCardProps) 
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [dragging, position, zIndex, card, setCard]);
-
+  }, [dragging, zIndex, card, setCard]);
 
   return (
     <div
       ref={cardRef}
       onClick={() => {
-        setCard({...card, visible: !card.visible})
+        setCard({ ...card, visible: !card.visible });
         bringToFront();
       }}
-      
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setFlipped((prev) => !prev);
+          setCard({ ...card, visible: !card.visible });
           bringToFront();
         }
       }}
       onMouseDown={handleMouseDown}
-      className="absolute h-48 w-35 cursor-grab perspective bg-transparent p-0 active:cursor-grabbing"
+      className="perspective absolute h-48 w-35 cursor-grab bg-transparent p-0 active:cursor-grabbing"
       style={{
-        left: position.x,
-        top: position.y,
+        left: card.x,
+        top: card.y,
         zIndex: zIndex,
       }}
     >
       <div
-        className={`preserve-3d relative h-full w-full transition-transform duration-700 rounded-xl ${
-          flipped ? "rotate-y-180" : ""
+        className={`preserve-3d relative h-full w-full rounded-xl transition-transform duration-700 ${
+          !card.visible ? "rotate-y-180" : ""
         } ${dragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}
       >
         {/* Front Face */}
