@@ -13,7 +13,6 @@ import { useState } from "react";
 import type { CardType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
-import HandCard from "./_components/HandCard";
 
 const initialCards: CardType[] = [
   {
@@ -48,10 +47,10 @@ const initialCards: CardType[] = [
   },
 ];
 
-const initialHand: string[] = [];
+const initialHand: CardType[] = [];
 
 export default function GamingPage() {
-  const [hand, setHand] = useState<string[]>(initialHand);
+  const [hand, setHand] = useState<CardType[]>(initialHand);
   const [canvasCards, setCanvasCards] = useState<CardType[]>(initialCards);
 
   const mouseSensor = useSensor(MouseSensor);
@@ -70,7 +69,11 @@ export default function GamingPage() {
     const [activeId, overId] = [active.id as Id<"cards">, String(over.id)];
 
     if (overId === "hand") {
-      setHand((prev) => (prev.includes(activeId) ? prev : [...prev, activeId]));
+      setHand((prev) => {
+        const card = canvasCards.find((c) => c._id === activeId);
+        if (!card || prev.some((c) => c._id === activeId)) return prev;
+        return [...prev, card];
+      });
       setCanvasCards((prev) => prev.filter((c) => c._id !== activeId));
     } else if (overId === "canvas") {
       const mouseX = active.rect?.current?.translated?.left ?? 200;
@@ -90,21 +93,16 @@ export default function GamingPage() {
         ...prev.filter((c) => c._id !== activeId),
         card,
       ]);
-      setHand((prev) => prev.filter((cid) => cid !== activeId));
+      setHand((prev) => prev.filter((c) => c._id !== activeId));
     }
   }
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-      {/* Canvas */}
       <Canvas cards={canvasCards} setCards={setCanvasCards} />
 
-      {/* Hand */}
-      <Hand id="hand">
-        {hand.map((id) => (
-          <HandCard key={id} id={id} />
-        ))}
-      </Hand>
+      {/* TODO: is there a way to add reordering of cards within a hand? */}
+      <Hand id="hand" hand={hand} setHand={setHand} />
     </DndContext>
   );
 }

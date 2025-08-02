@@ -5,17 +5,11 @@ import FlipCard from "./FlipCard";
 
 export type CanvasCardProps = {
   id: string;
-  image?: string;
   card: CardType;
   setCard: (card: CardType) => void;
 };
 
-export default function CanvasCard({
-  id,
-  image,
-  card,
-  setCard,
-}: CanvasCardProps) {
+export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
 
@@ -35,8 +29,7 @@ export default function CanvasCard({
         "h-28 w-20 rounded-lg shadow-md",
         isDragging
           ? "z-50 cursor-grab bg-blue-200 transition-none"
-          : "bg-gray-200 transition-shadow duration-200",
-        image ? `bg-[url(${image})] bg-center bg-cover` : "bg-gray-200"
+          : "bg-gray-200 transition-shadow duration-200"
       )}
     >
       <FlipCard
