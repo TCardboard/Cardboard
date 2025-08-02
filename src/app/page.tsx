@@ -20,8 +20,8 @@ export default function Home() {
             ))}
           </div>
           <FlipCard
-            front={<div className="text-xl font-semibold">Front</div>}
-            back={<div className="text-xl font-semibold">Back</div>}
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
           />
         </main>
       </main>
