@@ -4,6 +4,7 @@ import { useQuery } from "convex/react";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { api } from "../../convex/_generated/api";
+import FlipCard from "@/components/(PlayingCard)/FlipCard";
 
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
@@ -18,6 +19,10 @@ export default function Home() {
               <div key={_id}>{text}</div>
             ))}
           </div>
+          <FlipCard
+            front={<div className="text-xl font-semibold">Front</div>}
+            back={<div className="text-xl font-semibold">Back</div>}
+          />
         </main>
       </main>
     </SidebarProvider>
