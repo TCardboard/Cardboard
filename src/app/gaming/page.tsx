@@ -10,6 +10,7 @@ import {
 } from "@dnd-kit/core";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import type { CardType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
@@ -103,6 +104,25 @@ export default function GamingPage() {
 
       {/* TODO: is there a way to add reordering of cards within a hand? */}
       <Hand id="hand" hand={hand} setHand={setHand} />
+      <Button
+        onClick={() => {
+          setHand((prevs) => {
+            let shuffledCards = [] as typeof prevs;
+            prevs.forEach((c) => {
+              const l = shuffledCards.length;
+              const insertindex = Math.floor(Math.random() * l);
+              shuffledCards = [
+                ...shuffledCards.slice(0, insertindex - 1),
+                c,
+                ...shuffledCards.slice(insertindex - 1, l),
+              ];
+            });
+
+            // * yeah
+            return shuffledCards;
+          });
+        }}
+      />
     </DndContext>
   );
 }
