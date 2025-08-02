@@ -7,21 +7,6 @@ import { api } from "../../convex/_generated/api";
 
 import FlipCard from "@/components/(PlayingCard)/FlipCard";
 
-import { mutation } from "../../convex/_generated/server";
-import { v } from "convex/values";
-
-const createTask = mutation({
-  args: { text: v.string() },
-  handler: async (ctx, args) => {
-    const newTaskId = await ctx.db.insert("tasks", {
-      text: args.text,
-      isCompleted: false,
-    });
-    return newTaskId;
-  },
-});
-
-
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
 
@@ -49,8 +34,7 @@ export default function Home() {
             front={<div className="font-semibold text-xl ">Front</div>}
             back={<div className="font-semibold text-xl ">Back</div>}
           />
-        </main>
-
+        </div>
       </main>
     </SidebarProvider>
   );
