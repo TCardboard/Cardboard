@@ -5,18 +5,12 @@ import { v } from "convex/values";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { api } from "../../convex/_generated/api";
+<<<<<<< HEAD
 import { mutation } from "../../convex/_generated/server";
+=======
+>>>>>>> 30fd75b7bf60dabb95e7300aca1ccc2c41580e8d
 
-const createTask = mutation({
-  args: { text: v.string() },
-  handler: async (ctx, args) => {
-    const newTaskId = await ctx.db.insert("tasks", {
-      text: args.text,
-      isCompleted: false,
-    });
-    return newTaskId;
-  },
-});
+import FlipCard from "@/components/(PlayingCard)/FlipCard";
 
 export default function Home() {
   const tasks = useQuery(api.tasks.get);
@@ -29,6 +23,19 @@ export default function Home() {
           <div className="bg-white">
             tasks: {tasks?.map(({ _id, text }) => <div key={_id}>{text}</div>)}
           </div>
+
+          <FlipCard
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
+          />
+          <FlipCard
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
+          />
+          <FlipCard
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
+          />
         </div>
       </main>
     </SidebarProvider>
