@@ -1,6 +1,7 @@
 'use client';
 
 import { CardType } from "@/utils/types";
+import { toBeVisible } from "@testing-library/jest-dom/matchers";
 import { useEffect, useRef, useState } from "react";
 
 let globalZIndex = 50;
@@ -72,13 +73,15 @@ export default function FlipCard({ front, back, card, setCard }: FlipCardProps) 
     };
   }, [dragging, position, zIndex, card, setCard]);
 
+
   return (
     <div
       ref={cardRef}
       onClick={() => {
-        setFlipped(!flipped);
+        setCard({...card, visible: !card.visible})
         bringToFront();
       }}
+      
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();

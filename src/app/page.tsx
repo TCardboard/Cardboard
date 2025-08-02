@@ -32,11 +32,6 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex gap-4">
-            <FlipCard cardID="4-hearts" />
-            <FlipCard cardID="5-hearts" />
-            <FlipCard cardID="6-hearts" />
-          </div>
 
           <div className="flex gap-4">
             <Button label="Reshuffle" onClick={handleReshuffle} />
