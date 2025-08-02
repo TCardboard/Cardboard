@@ -11,17 +11,19 @@ export type HandProps = {
 
 export default function Hand({ id, children }: HandProps) {
   const { isOver, setNodeRef } = useDroppable({ id });
+
   return (
     <div
       ref={setNodeRef}
       className={cn(
-        "flex min-h-[140px] flex-row items-center justify-center gap-2 rounded-lg border-2 p-2",
+        "fixed bottom-0 left-0 z-50 w-full",
+        "flex min-h-[140px] flex-row items-center justify-center gap-2 rounded-t-lg p-2",
         isOver
-          ? "border-yellow-500 bg-yellow-200"
-          : "border-gray-300 bg-gray-100"
+          ? "bg-gradient-to-t from-green-300 to-transparent"
+          : "bg-gradient-to-t from-green-200 to-transparent"
       )}
     >
-      <div className="mr-2 font-bold">Hand</div>
+      <div className="mr-2 font-bold text-black-800">Hand</div>
       {children}
     </div>
   );
