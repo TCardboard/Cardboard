@@ -3,8 +3,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Geist_Mono, Manrope } from "next/font/google";
 import { TanstackClientProvider } from "@/libs/tanstack";
-import { RoutingDevTools } from "@/utils/devtools/DevToolsProvider";
 import { ConvexClientProvider } from "@/providers/ConvexProvider";
+import { RoutingDevTools } from "@/utils/devtools/DevToolsProvider";
 
 const manrope = Manrope({
   variable: "--font-manrope",

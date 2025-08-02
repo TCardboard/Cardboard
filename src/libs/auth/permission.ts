@@ -7,19 +7,19 @@ import { createAccessControl } from "better-auth/plugins/access";
 
 // TODO: update permission according to future features
 const statement = {
-	project: ["create", "update", "delete"],
+  project: ["create", "update", "delete"],
 } as const;
 
 export const ac = createAccessControl(statement);
 
 export const user = ac.newRole({
-	project: ["create"],
+  project: ["create"],
 });
 
 export const staff = ac.newRole({
-	project: ["create", "update"],
+  project: ["create", "update"],
 });
 
 export const admin = ac.newRole({
-	project: ["create", "update", "delete"],
+  project: ["create", "update", "delete"],
 });
