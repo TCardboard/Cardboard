@@ -1,11 +1,9 @@
-import "@xyflow/react/dist/style.css";
-import "./globals.css";
-
-import type { Metadata } from "next";
-import { Geist_Mono, Manrope } from "next/font/google";
-import { TanstackClientProvider } from "@/libs/tanstack";
 import { ConvexClientProvider } from "@/providers/ConvexProvider";
 import { RoutingDevTools } from "@/utils/devtools/DevToolsProvider";
+import "@xyflow/react/dist/style.css";
+import type { Metadata } from "next";
+import { Geist_Mono, Manrope } from "next/font/google";
+import "./globals.css";
 
 const manrope = Manrope({
   variable: "--font-manrope",
