@@ -4,18 +4,16 @@ type DraggableCardProps = {
   id: string;
   x: number;
   y: number;
+  image?: string;
   children?: React.ReactNode;
-  onMove: (id: string, x: number, y: number) => void;
-  onDrop: (id: string) => void;
 };
 
 export default function DraggableCard({
   id,
   x,
   y,
+  image,
   children,
-  onMove,
-  onDrop,
 }: DraggableCardProps) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
@@ -27,7 +25,7 @@ export default function DraggableCard({
     height: 120,
     borderRadius: 8,
     boxShadow: isDragging ? "0 0 8px #333" : "0 2px 6px #aaa",
-    background: "#fff",
+    background: image ? `url(${image}) center/cover` : "#fff",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

@@ -48,25 +48,11 @@ export default function CardsPage() {
     }
   }
 
-  function handleCardMove(id: string, x: number, y: number) {
-    setCanvasCards((prev) =>
-      prev.map((card) => (card.id === id ? { ...card, x, y } : card))
-    );
-  }
-
-  function handleCardDrop(id: string) {
-    setHand((prev) => prev.filter((cid) => cid !== id));
-  }
-
   return (
     <DndContext onDragEnd={handleDragEnd}>
       <div className="flex flex-1 flex-col items-center">
         <div className="mb-4 font-bold">Canvas</div>
-        <DroppableCanvas
-          cards={canvasCards}
-          onCardMove={handleCardMove}
-          onCardDrop={handleCardDrop}
-        />
+        <DroppableCanvas cards={canvasCards} />
       </div>
 
       <div className="flex flex-col gap-4">
