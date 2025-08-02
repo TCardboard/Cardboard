@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+let globalZIndex = 50;
+
 interface FlipCardProps {
   front: React.ReactNode;
   back: React.ReactNode;
@@ -11,11 +13,18 @@ export default function FlipCard({ front, back }: FlipCardProps) {
   const [flipped, setFlipped] = useState(false);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [dragging, setDragging] = useState(false);
-  const dragStart = useRef({ x: 0, y: 0 });
+  const [zIndex, setZIndex] = useState(globalZIndex);
 
+  const dragStart = useRef({ x: 0, y: 0 });
   const cardRef = useRef<HTMLButtonElement>(null);
 
+  const bringToFront = () => {
+    globalZIndex += 1;
+    setZIndex(globalZIndex);
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
+    bringToFront();
     setDragging(true);
     dragStart.current = {
       x: e.clientX - position.x,
@@ -48,11 +57,14 @@ export default function FlipCard({ front, back }: FlipCardProps) {
   return (
     <button
       ref={cardRef}
-      className="absolute bg-transparent border-none cursor-grab h-48 p-0 perspective w-35 z-50 active:cursor-grabbing"
-      onMouseDown={handleMouseDown}
-      onClick={() => setFlipped(!flipped)}
-      style={{ left: position.x, top: position.y }}
       type="button"
+      onClick={() => {
+        setFlipped(!flipped);
+        bringToFront();
+      }}
+      onMouseDown={handleMouseDown}
+      className="absolute bg-transparent border-none cursor-grab h-48 p-0 perspective w-35 active:cursor-grabbing"
+      style={{ left: position.x, top: position.y, zIndex }}
     >
       <div
         className={`preserve-3d relative h-full w-full transition-transform duration-700 ${

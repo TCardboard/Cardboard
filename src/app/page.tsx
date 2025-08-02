@@ -23,6 +23,14 @@ export default function Home() {
             front={<div className="font-semibold text-xl ">Front</div>}
             back={<div className="font-semibold text-xl ">Back</div>}
           />
+          <FlipCard
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
+          />
+          <FlipCard
+            front={<div className="font-semibold text-xl ">Front</div>}
+            back={<div className="font-semibold text-xl ">Back</div>}
+          />
         </main>
       </main>
     </SidebarProvider>
