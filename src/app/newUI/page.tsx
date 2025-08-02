@@ -8,10 +8,9 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
-import Button from "@/components/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/libs/utils";
 import { ChatRoom } from "./ChatRoom";
@@ -43,7 +42,7 @@ type PlayerCtxType = {
   name: string;
   cards: CardType[];
   setName: (name: string) => void;
-  setCards: (cards: CardType[]) => void;
+  setCards: (cards: CardType[] | ((prev: CardType[]) => CardType[])) => void;
 };
 
 const PlayerContext = createContext({} as PlayerCtxType);
@@ -57,7 +56,7 @@ const usePlayer = () => {
 };
 
 const Board = () => {
-  const [name, setName] = useState<string>("AA");
+  const [name, setName] = useState<string>("");
   const [cards, setCards] = useState<CardType[]>([
     { id: "1" },
     { id: "2" },
@@ -72,18 +71,14 @@ const Board = () => {
           <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
         </WindowContainer>
       </PlayerContext.Provider>
-      <Button
-        label="Pop a card!"
-        onClick={() => {
-          setCards((prev) => prev.slice(0, prev.length - 1));
-        }}
-      />
       <ChatRoom name={name} />
     </>
   );
 };
 
 const GameRoom = () => {
+  const { setCards } = usePlayer();
+
   return (
     <>
       {/* top */}
@@ -93,6 +88,14 @@ const GameRoom = () => {
       {/* right */}
       <PlayerWindow className="-translate-y-1/2 absolute top-1/2 right-0 translate-x-1/4" />
       <DropBox />
+      <Button
+        className="-translate-x-1/2 absolute bottom-0 left-1/2"
+        onClick={() => {
+          setCards((prev: CardType[]) => prev.slice(0, prev.length - 1));
+        }}
+      >
+        Pop a card!
+      </Button>
     </>
   );
 };
@@ -128,7 +131,9 @@ const EnterGame = () => {
             <p>Room Id:</p>
             <Input />
           </div>
-          <Button label="Enter" className="mt-2" onClick={handleSetName} />
+          <Button className="mt-2" onClick={handleSetName}>
+            Enter
+          </Button>
         </div>
       </div>
     </div>
@@ -171,12 +176,13 @@ const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
           className="*:-mr-9 flex items-center justify-center"
           initial="initial"
           animate="animate"
-          exit="exit"
           transition={{ delayChildren: stagger(0.4) }}
         >
-          {cards.map((card) => {
-            return <RandomCard key={card.id} card={card} />;
-          })}
+          <AnimatePresence mode="popLayout">
+            {cards.map((card) => {
+              return <RandomCard key={card.id} card={card} />;
+            })}
+          </AnimatePresence>
         </motion.div>
       </WindowContent>
     </WindowContainer>
@@ -200,7 +206,7 @@ const Card = ({ card, rotate }: { card: CardType; rotate: number }) => {
     () => ({
       initial: { opacity: 0, x: "100%", rotate },
       animate: { opacity: 1, x: 0, rotate: rotate / 20 },
-      exit: { opacity: 0, y: "100%", rotate: rotate * 4 },
+      exit: { opacity: 0, y: "25%", rotate: rotate * 0.5 },
     }),
     [rotate],
   );
@@ -209,6 +215,9 @@ const Card = ({ card, rotate }: { card: CardType; rotate: number }) => {
     <motion.div
       key={card.id}
       variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
       className=" h-min min-h-[calc(35px*1.8)] min-w-[calc(25px*1.8)] border border-white bg-red-500 shadow-2xl"
     />
   );
