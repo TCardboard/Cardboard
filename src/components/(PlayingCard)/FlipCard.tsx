@@ -1,27 +1,39 @@
 "use client";
 
-import type { CardType } from "@/utils/types";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { getCardUrl } from "@/libs/cards";
+import type { CardType } from "@/utils/types";
 
 let globalZIndex = 50;
 
 interface FlipCardProps {
-  front: React.ReactNode;
-  back: React.ReactNode;
   card: CardType;
   setCard: (card: CardType) => void;
 }
 
 // Nate: I made just enough hacks to get this to compile - Kevin when you convert this to DND-Kit, plz connect it to the DB properly :heart:
 // Currently dragging is buggy and z-index isn't connected at all (has its own special function)
-export default function FlipCard({
-  front,
-  back,
-  card,
-  setCard,
-}: FlipCardProps) {
+export default function FlipCard({ card, setCard }: FlipCardProps) {
   const [dragging, setDragging] = useState(false);
   const [zIndex, setZIndex] = useState(0);
+
+  const front = (
+    <Image
+      src={getCardUrl(card.type)}
+      width={88}
+      height={124}
+      alt={card.type}
+    ></Image>
+  );
+  const back = (
+    <Image
+      src="/Cards/Backs/Red Back.png"
+      width={88}
+      height={124}
+      alt={card.type}
+    ></Image>
+  );
 
   useEffect(() => {
     if (card) {
@@ -89,7 +101,7 @@ export default function FlipCard({
         }
       }}
       onMouseDown={handleMouseDown}
-      className="perspective absolute h-48 w-35 cursor-grab bg-transparent p-0 active:cursor-grabbing"
+      className="perspective absolute h-24 w-17.5 cursor-grab bg-transparent p-0 active:cursor-grabbing"
       style={{
         left: card.x,
         top: card.y,
