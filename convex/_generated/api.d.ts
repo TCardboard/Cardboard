@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as cards from "../cards.js";
+import type * as chat from "../chat.js";
 import type * as mutation_cardUpdate from "../mutation/cardUpdate.js";
 import type * as tasks from "../tasks.js";
 
@@ -27,6 +28,7 @@ import type * as tasks from "../tasks.js";
  */
 declare const fullApi: ApiFromModules<{
   cards: typeof cards;
+  chat: typeof chat;
   "mutation/cardUpdate": typeof mutation_cardUpdate;
   tasks: typeof tasks;
 }>;

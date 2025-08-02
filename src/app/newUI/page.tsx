@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/libs/utils";
 import { ChatRoom } from "./ChatRoom";
+import { Clock } from "./Clock";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
 export default function NewUIPage() {
@@ -40,8 +41,10 @@ type CardType = {
 
 type PlayerCtxType = {
   name: string;
+  room: string;
   cards: CardType[];
   setName: (name: string) => void;
+  setRoom: (name: string) => void;
   setCards: (cards: CardType[] | ((prev: CardType[]) => CardType[])) => void;
 };
 
@@ -57,6 +60,7 @@ const usePlayer = () => {
 
 const Board = () => {
   const [name, setName] = useState<string>("");
+  const [room, setRoom] = useState("");
   const [cards, setCards] = useState<CardType[]>([
     { id: "1" },
     { id: "2" },
@@ -65,11 +69,14 @@ const Board = () => {
 
   return (
     <>
-      <PlayerContext.Provider value={{ name, cards, setName, setCards }}>
+      <PlayerContext.Provider
+        value={{ name, cards, room, setName, setCards, setRoom }}
+      >
         <WindowContainer className="size-full">
           <WindowHeader>Card Board</WindowHeader>
           <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
         </WindowContainer>
+        <Clock />
       </PlayerContext.Provider>
       <ChatRoom name={name} />
     </>
@@ -103,6 +110,7 @@ const GameRoom = () => {
 const EnterGame = () => {
   const { setName } = usePlayer();
   const [inputName, setInputName] = useState("");
+  const [room, setRoom] = useState("");
 
   const handleSetName = () => {
     setName(inputName);
@@ -129,7 +137,7 @@ const EnterGame = () => {
           </div>
           <div className="flex flex-col">
             <p>Room Id:</p>
-            <Input />
+            <Input value={room} onChange={(e) => setRoom(e.target.value)} />
           </div>
           <Button className="mt-2" onClick={handleSetName}>
             Enter
@@ -162,13 +170,13 @@ const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
     >
       <WindowHeader>Player</WindowHeader>
       <WindowContent className="flex-row">
-        <div className="relative h-16 w-16">
+        <div className="relative h-16 w-16 select-none">
           <Image
             fill
             src="/player.png"
             alt="player"
             priority
-            className="object-fill"
+            className="pointer-events-none object-fill"
           />
         </div>
 
@@ -218,7 +226,7 @@ const Card = ({ card, rotate }: { card: CardType; rotate: number }) => {
       initial="initial"
       animate="animate"
       exit="exit"
-      className=" h-min min-h-[calc(35px*1.8)] min-w-[calc(25px*1.8)] border border-white bg-red-500 shadow-2xl"
+      className=" h-min min-h-[calc(35px*1.8)] min-w-[calc(25px*1.8)] border border-white bg-secondary shadow-2xl"
     />
   );
 };

@@ -13,4 +13,8 @@ export default defineSchema({
   users: defineTable({
     name: v.string(),
   }),
+  messages: defineTable({
+    user: v.string(),
+    body: v.string(),
+  }),
 });
