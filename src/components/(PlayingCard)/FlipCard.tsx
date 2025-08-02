@@ -16,7 +16,7 @@ export default function FlipCard({ front, back }: FlipCardProps) {
   const [zIndex, setZIndex] = useState(globalZIndex);
 
   const dragStart = useRef({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLButtonElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const bringToFront = () => {
     globalZIndex += 1;
@@ -33,17 +33,17 @@ export default function FlipCard({ front, back }: FlipCardProps) {
   };
 
   useEffect(() => {
-    function handleMouseMove(e: MouseEvent) {
+    const handleMouseMove = (e: MouseEvent) => {
       if (!dragging) return;
       setPosition({
         x: e.clientX - dragStart.current.x,
         y: e.clientY - dragStart.current.y,
       });
-    }
+    };
 
-    function handleMouseUp() {
+    const handleMouseUp = () => {
       setDragging(false);
-    }
+    };
 
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -55,15 +55,21 @@ export default function FlipCard({ front, back }: FlipCardProps) {
   }, [dragging]);
 
   return (
-    <button
+    <div
       ref={cardRef}
-      type="button"
       onClick={() => {
         setFlipped(!flipped);
         bringToFront();
       }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setFlipped((prev) => !prev);
+          bringToFront();
+        }
+      }}
       onMouseDown={handleMouseDown}
-      className="perspective absolute h-48 w-35 cursor-grab border-none bg-transparent p-0 active:cursor-grabbing"
+      className="absolute z-50 h-48 w-35 cursor-grab perspective bg-transparent p-0 active:cursor-grabbing"
       style={{ left: position.x, top: position.y, zIndex }}
     >
       <div
@@ -81,6 +87,6 @@ export default function FlipCard({ front, back }: FlipCardProps) {
           {back}
         </div>
       </div>
-    </button>
+    </div>
   );
 }
