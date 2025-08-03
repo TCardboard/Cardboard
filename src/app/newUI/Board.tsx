@@ -1,3 +1,6 @@
+import XpWindowControls from "@/components/controlbutton";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -11,8 +14,6 @@ import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Clock } from "lucide-react";
 import { useEffect } from "react";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
 import { ChatRoom } from "./ChatRoom";
 import { EnterGame } from "./EnterGame";
 import { GameRoom } from "./GameRoom";
@@ -21,13 +22,7 @@ import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 export default function Board() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
   const updateAllCards = useMutation(api.cards.updateAllCards);
-  const newGame = useMutation(api.cards.newGame);
-
-  useEffect(() => {
-    newGame();
-  }, [newGame]);
-
-  const { player } = useLocalPlayer();
+  const { player, setPlayer } = useLocalPlayer();
 
   const hand = cards.filter((c) => c.playerId === player?._id);
   const canvasCards = cards.filter((c) => c.playerId !== player?._id);
@@ -97,10 +92,15 @@ export default function Board() {
     }
   }
 
+  const handleLogout = () => {
+    console.log("User logged out");
+    setPlayer(null);
+  };
+
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <WindowContainer className="size-full">
-        <WindowHeader>Card Board</WindowHeader>
+        <WindowHeader>Card Board <XpWindowControls controls={["logout"]} onLogout={handleLogout} /></WindowHeader>
         <WindowContent>
           {player ? (
             <GameRoom
