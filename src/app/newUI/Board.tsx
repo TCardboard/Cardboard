@@ -117,7 +117,7 @@ export default function Board() {
           </DndContext>
         </WindowContent>
       </WindowContainer>
-      <Clock />
+      {/* <Clock /> */}
       <ChatRoom />
     </>
   );
