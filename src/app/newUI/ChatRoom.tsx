@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "convex/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
+import XpWindowControls from "@/components/controlbutton";
 
 export const ChatRoom = () => {
   const { player } = useLocalPlayer();
@@ -50,11 +51,11 @@ export const ChatRoom = () => {
   return (
     <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300 ">
       <WindowHeader
-        className="flex justify-between hover:cursor-pointer "
+        className="flex justify-between pr-1 hover:cursor-pointer"
         onClick={handleTogglePosition}
       >
         Game Room
-        <button type="button">--</button>
+        <XpWindowControls/>
       </WindowHeader>
       <WindowContent
         className={cn(isMovedDown && "min-h-0 py-0 transition *:hidden")}
