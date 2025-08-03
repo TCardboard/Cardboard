@@ -14,7 +14,8 @@ export const EnterGame = () => {
   const [inputName, setInputName] = useState("");
   const [inputRoom, setInputRoom] = useState("");
 
-  const handleSetName = async () => {
+  const handleSetName = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const loginDetails = { name: inputName, room: inputRoom };
     const user = await login(loginDetails);
     if (!user) {
@@ -35,23 +36,25 @@ export const EnterGame = () => {
           className="aspect-square size-[150px] opacity-80 bg-blend-multiply"
         />
         <div className="w-px flex-1 bg-secondary"></div>
-        <div className="flex flex-col gap-2 pl-12">
-          <div className="flex flex-col">
-            <p>Name:</p>
-            <Input
-              value={inputName}
-              onChange={(e) => setInputName(e.target.value)}
-            />
+        <form onSubmit={handleSetName}>
+          <div className="flex flex-col gap-2 pl-12">
+            <div className="flex flex-col">
+              <p>Name:</p>
+              <Input
+                value={inputName}
+                onChange={(e) => setInputName(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col">
+              <p>Room Id:</p>
+              <Input
+                value={inputRoom}
+                onChange={(e) => setInputRoom(e.target.value)}
+              />
+            </div>
+            <Button type="submit" label="Enter" className="bg-blue-600 text-white hover:bg-blue-700" />
           </div>
-          <div className="flex flex-col">
-            <p>Room Id:</p>
-            <Input
-              value={inputRoom}
-              onChange={(e) => setInputRoom(e.target.value)}
-            />
-          </div>
-          <Button label="Enter" className="bg-blue-600 text-white hover:bg-blue-700" onClick={handleSetName} />
-        </div>
+        </form>
       </div>
     </div>
   );
