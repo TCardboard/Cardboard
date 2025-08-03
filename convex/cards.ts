@@ -17,6 +17,7 @@ export const updateCard = mutation({
   },
   handler: async (ctx, args) => {
     await ctx.db.patch(args.cardId, { ...args.card });
+    return await ctx.db.get(args.cardId);
   },
 });
 

@@ -17,22 +17,25 @@ interface FlipCardProps {
 export default function FlipCard({ card, setCard }: FlipCardProps) {
   const [dragging, setDragging] = useState(false);
   const [zIndex, setZIndex] = useState(0);
+  const [hasDragged, setHasDragged] = useState(false);
 
   const front = (
     <Image
+      className="pointer-events-none"
       src={getCardUrl(card.type)}
       width={88}
       height={124}
       alt={card.type}
-    ></Image>
+    />
   );
   const back = (
     <Image
+      className="pointer-events-none"
       src="/Cards/Backs/Red Back.png"
       width={88}
       height={124}
       alt={card.type}
-    ></Image>
+    />
   );
 
   useEffect(() => {
@@ -46,12 +49,13 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
 
   const bringToFront = () => {
     globalZIndex += 1;
-    setZIndex(card.z && 0);
+    setZIndex(globalZIndex);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     bringToFront();
     setDragging(true);
+    setHasDragged(false);
     dragStart.current = {
       x: e.clientX - card.x,
       y: e.clientY - card.y,
@@ -63,6 +67,7 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
       if (!dragging) return;
       const x = e.clientX - dragStart.current.x;
       const y = e.clientY - dragStart.current.y;
+      setHasDragged(true);
       setCard({ ...card, x, y });
     };
 
@@ -90,14 +95,19 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
     <div
       ref={cardRef}
       onClick={() => {
-        setCard({ ...card, visible: !card.visible });
-        bringToFront();
+        if (!hasDragged) {
+          setCard({ ...card, visible: !card.visible });
+          bringToFront();
+        }
       }}
+      onDrag={(e) => e.stopPropagation()}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          setCard({ ...card, visible: !card.visible });
-          bringToFront();
+          if (!hasDragged) {
+            setCard({ ...card, visible: !card.visible });
+            bringToFront();
+          }
         }
       }}
       onMouseDown={handleMouseDown}
@@ -106,13 +116,11 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
         left: card.x,
         top: card.y,
         zIndex: zIndex,
-      }}
-    >
+      }}>
       <div
         className={`preserve-3d relative h-full w-full rounded-xl transition-transform duration-700 ${
           !card.visible ? "rotate-y-180" : ""
-        } ${dragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}
-      >
+        } ${dragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}>
         {/* Front Face */}
         <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl bg-blue-500 text-white">
           {front}
