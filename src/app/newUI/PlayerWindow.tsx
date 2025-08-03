@@ -2,21 +2,35 @@ import { api } from "@root/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
-import type { HTMLAttributes } from "react";
+
+import { type HTMLAttributes, use } from "react";
 import { cn } from "@/libs/utils";
+import type { CardType, UserType } from "@/utils/types";
+
 import { RandomCard } from "./page";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
-export const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
-  const cards = useQuery(api.cards.getAllCards) ?? [];
+export type PlayerWindowProps = HTMLAttributes<HTMLDivElement> & {
+  user: UserType;
+};
+export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
+  let cards: CardType[] = [];
+  let playerName = "No Player";
+  if (user) {
+    playerName = user.name;
+    cards = useQuery(api.cards.getPlayersCards, { userId: user._id }) ?? [];
+    console.log(user._id);
+  }
 
   console.log(cards);
 
   return (
     <WindowContainer
       {...props}
-      className={cn("w-min min-w-[250px] bg-white", props.className)}>
-      <WindowHeader>Player</WindowHeader>
+      className={cn("w-min min-w-[250px] bg-white", props.className)}
+    >
+      <WindowHeader>{playerName}</WindowHeader>
+
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
           <p className="absolute right-0 bottom-0 z-50 w-min whitespace-nowrap bg-secondary p-1 py-0 text-white">
