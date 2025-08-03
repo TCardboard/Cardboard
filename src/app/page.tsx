@@ -3,6 +3,7 @@
 import FlipCard from "@/components/(PlayingCard)/FlipCard";
 import { AppSidebar } from "@/components/app-sidebar";
 import Button from "@/components/button";
+import XpWindowControls from "@/components/controlbutton";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import type { CardType } from "@/utils/types";
 import { useMutation, useQuery } from "convex/react";
@@ -27,12 +28,22 @@ export default function Home() {
   const startNewGame = () => {
     newGame();
   };
+  
+  const handleMinimize = () => alert("Minimize clicked");
+  const handleMaximize = () => alert("Maximize clicked");
+  const handleClose = () => alert("Close clicked");
 
   return (
     <SidebarProvider>
       <AppSidebar />
       <main className="flex flex-1 flex-col p-4">
         <div className="flex min-h-screen flex-col items-center justify-between gap-6 p-24">
+          <XpWindowControls
+            onMinimize={handleMinimize}
+            onMaximize={handleMaximize}
+            onClose={handleClose}
+          />
+
           <div className="bg-white">
             cards:
             {cards?.map((card) => (
