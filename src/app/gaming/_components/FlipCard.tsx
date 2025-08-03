@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
+import { getCardUrl } from "@/libs/cards";
 import type { CardType } from "@/utils/types";
 
 interface CardProps {
@@ -11,17 +13,26 @@ interface CardProps {
   setCard: (card: CardType) => void;
 }
 
-export default function FlipCard({
-  isDragging,
-  front,
-  back,
-  card,
-  setCard,
-}: CardProps) {
+export default function FlipCard({ isDragging, card, setCard }: CardProps) {
   const [flipped, setFlipped] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
-
+  const front = (
+    <Image
+      src={getCardUrl(card.type)}
+      width={88}
+      height={124}
+      alt={card.type}
+    ></Image>
+  );
+  const back = (
+    <Image
+      src="/Cards/Backs/Red Back.png"
+      width={88}
+      height={124}
+      alt={card.type}
+    ></Image>
+  );
   return (
     <div
       ref={cardRef}
