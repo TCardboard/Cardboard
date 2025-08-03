@@ -20,6 +20,9 @@ import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
 export default function Board() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
+
+  console.log("cards", cards);
+
   const updateAllCards = useMutation(api.cards.updateAllCards);
   const { player, setPlayer } = useLocalPlayer();
 

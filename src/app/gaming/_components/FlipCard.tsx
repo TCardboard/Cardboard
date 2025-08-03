@@ -7,18 +7,14 @@ import type { CardType } from "@/utils/types";
 
 interface CardProps {
   isDragging: boolean;
-  front: React.ReactNode;
-  back: React.ReactNode;
   card: CardType;
   flipped: boolean;
   setFlipped: (flipped: boolean) => void;
-  setCard: (card: CardType) => void;
 }
 
 export default function FlipCard({
   isDragging,
   card,
-  setCard,
   flipped = false,
   setFlipped,
 }: CardProps) {

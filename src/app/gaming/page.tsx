@@ -102,7 +102,7 @@ export default function GamingPage() {
       <Canvas cards={canvasCards} setCards={setCanvasCards} />
 
       {/* TODO: is there a way to add reordering of cards within a hand? */}
-      <Hand id="hand" hand={hand} setHand={setHand} />
+      <Hand id="hand" hand={hand} />
       <Button
         onClick={() => {
           setHand((prevs) => {
