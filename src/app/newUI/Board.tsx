@@ -1,6 +1,5 @@
-import XpWindowControls from "@/components/controlbutton";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
+"use client";
+
 import {
   DndContext,
   type DragEndEvent,
@@ -13,6 +12,9 @@ import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Clock } from "lucide-react";
+import XpWindowControls from "@/components/controlbutton";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import { ChatRoom } from "./ChatRoom";
 import { EnterGame } from "./EnterGame";
 import { GameRoom } from "./GameRoom";
@@ -26,7 +28,7 @@ export default function Board() {
 
   const hand = cards.filter((c) => c.playerId === player?._id);
   const canvasCards = cards.filter((c) => c.playerId !== player?._id);
-  
+
   const setHand = (update: (prev: CardType[]) => CardType[]) => {
     const newHand = update(hand);
     const newCards = [...newHand, ...canvasCards];
@@ -72,14 +74,14 @@ export default function Board() {
       });
       setCanvasCards((prev) => prev.filter((c) => c._id !== activeId));
     } else if (overId === "canvas") {
-      const mouseX = active.rect?.current?.translated?.left ?? 200;
-      const mouseY = active.rect?.current?.translated?.top ?? 200;
+      const mouseX = active.rect?.current?.translated?.left ?? 0;
+      const mouseY = active.rect?.current?.translated?.top ?? 0;
 
       const card = cards.find((c) => c._id === activeId);
       if (card) {
         card.playerId = null;
-        card.x = mouseX;
-        card.y = mouseY;
+        card.x = mouseX - 128;
+        card.y = mouseY - 128;
       }
       if (!card) return;
       setCanvasCards((prev) => [
@@ -96,25 +98,30 @@ export default function Board() {
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <>
       <WindowContainer className="size-full">
         <WindowHeader className="px-2">
-          Card Board {player && <XpWindowControls controls={["logout"]} onLogout={handleLogout} />}
+          Card Board{" "}
+          {player && (
+            <XpWindowControls controls={["logout"]} onLogout={handleLogout} />
+          )}
         </WindowHeader>
         <WindowContent>
-          {player ? (
-            <GameRoom
-              hand={hand}
-              canvasCards={canvasCards}
-              setCanvasCards={setCanvasCards}
-            />
-          ) : (
-            <EnterGame />
-          )}
+          <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+            {player ? (
+              <GameRoom
+                hand={hand}
+                canvasCards={canvasCards}
+                setCanvasCards={setCanvasCards}
+              />
+            ) : (
+              <EnterGame />
+            )}
+          </DndContext>
         </WindowContent>
       </WindowContainer>
       <Clock />
       <ChatRoom />
-    </DndContext>
+    </>
   );
 }

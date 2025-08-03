@@ -26,7 +26,7 @@ export default function HandCard({ id, card }: HandCardProps) {
       {...attributes}
       className={cn(
         "flex items-center justify-center",
-        "h-28 w-20 rounded-lg shadow-md",
+        "h-[192px] w-[140px] rounded-lg shadow-md",
         isDragging
           ? "z-50 cursor-grab bg-blue-200 transition-none"
           : "bg-gray-200 transition-shadow duration-200"

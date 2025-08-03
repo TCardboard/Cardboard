@@ -1,8 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -15,6 +12,9 @@ import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
 

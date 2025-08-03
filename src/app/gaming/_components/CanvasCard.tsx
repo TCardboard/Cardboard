@@ -1,4 +1,8 @@
+"use client";
+
 import { useDraggable } from "@dnd-kit/core";
+import { api } from "@root/convex/_generated/api";
+import { useMutation } from "convex/react";
 import { useEffect, useState } from "react";
 import { cn } from "@/libs/utils";
 import type { CardType } from "@/utils/types";
@@ -11,9 +15,10 @@ export type CanvasCardProps = {
 };
 
 export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
-  const [flipped, setFlipped] = useState(false);
   const [finalT, setFinalT] = useState({ x: 0, y: 0 });
   const margin = 1;
+
+  const updateCard = useMutation(api.cards.updateCard);
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id });
@@ -21,7 +26,10 @@ export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
   useEffect(() => {
     const delta = Math.sqrt(finalT.x ** 2 + finalT.y ** 2);
     if (delta > margin) {
-      setFlipped((f) => !f);
+      // Flip the card by updating the visible field on the server
+      const updatedCard = { ...card, visible: !card.visible };
+      updateCard({ card: updatedCard, cardId: card._id });
+      setCard(updatedCard);
     }
     console.log(delta);
     setFinalT({ x: 0, y: 0 });
@@ -47,18 +55,25 @@ export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
       {...listeners}
       {...attributes}
       onMouseUp={() => {
-        setFlipped((f) => !f);
+        return card.visible;
       }}
       className={cn(
-        "absolute flex items-center justify-center",
-        "h-28 w-20 rounded-lg shadow-md",
+        "absolute flex items-center justify-center transition",
+        "h-[192px] w-[140px] rounded-lg shadow-md",
         isDragging
           ? "z-50 cursor-grab bg-blue-200 transition-none"
           : "bg-gray-200 transition-shadow duration-200"
       )}>
       <FlipCard
-        flipped={flipped}
-        setFlipped={setFlipped}
+        flipped={!card.visible}
+        setFlipped={(flipped) => {
+          const updatedCard = { ...card, visible: !flipped };
+          updateCard({
+            card: { ...updatedCard, visible: !card.visible },
+            cardId: card._id,
+          });
+          setCard(updatedCard);
+        }}
         isDragging={isDragging}
         front={<p>Front Content</p>}
         back={<p>Back Content</p>}

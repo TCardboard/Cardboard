@@ -27,8 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${manrope.className} ${geistMono.variable} h-dhw w-dvw antialiased`}
-      >
+        className={`${manrope.className} ${geistMono.variable} h-dhw w-dvw antialiased`}>
         <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>
     </html>

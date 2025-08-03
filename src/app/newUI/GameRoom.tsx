@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from "@root/convex/_generated/api";
 import { useQuery } from "convex/react";
 import type { CardType } from "@/utils/types";

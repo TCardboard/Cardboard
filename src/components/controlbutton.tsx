@@ -17,7 +17,6 @@ export function ControlButton({
   ...props
 }: ControlButtonProps) {
   const baseStyle = `
-    w-6 h-6
     flex items-center justify-center
     text-xs font-bold text-black
     bg-[#d4d0c8]
@@ -38,8 +37,7 @@ export function ControlButton({
     <button
       className={cn(baseStyle, closeVariant, className)}
       {...props}
-      type={props.type ?? "button"}
-    >
+      type={props.type ?? "button"}>
       {icon ?? symbol}
     </button>
   );
@@ -54,7 +52,7 @@ type XpWindowControlsProps = {
 };
 
 export default function XpWindowControls({
-  controls = ["minimize", "maximize", "close", "logout"], 
+  controls = ["minimize", "maximize", "close", "logout"],
   onMinimize,
   onMaximize,
   onClose,
@@ -101,8 +99,7 @@ export default function XpWindowControls({
               strokeLinecap="round"
               strokeLinejoin="round"
               role="img"
-              aria-labelledby="logoutTitle"
-            >
+              aria-labelledby="logoutTitle">
               <title id="logoutTitle">Logout icon</title>
               <path d="M16 17l5-5-5-5" />
               <path d="M21 12H9" />
