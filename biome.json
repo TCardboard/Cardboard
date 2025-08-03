@@ -26,7 +26,8 @@
         "noStaticElementInteractions": "off"
       },
       "correctness": {
-        "useHookAtTopLevel": "off"
+        "useHookAtTopLevel": "off",
+        "useExhaustiveDependencies": "off"
       },
       "nursery": {
         "useSortedClasses": {

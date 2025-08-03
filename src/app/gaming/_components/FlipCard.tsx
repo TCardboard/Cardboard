@@ -10,55 +10,51 @@ interface CardProps {
   front: React.ReactNode;
   back: React.ReactNode;
   card: CardType;
+  flipped: boolean;
+  setFlipped: (flipped: boolean) => void;
   setCard: (card: CardType) => void;
 }
 
-export default function FlipCard({ isDragging, card, setCard }: CardProps) {
-  const [flipped, setFlipped] = useState(false);
-
+export default function FlipCard({
+  isDragging,
+  card,
+  setCard,
+  flipped = false,
+  setFlipped,
+}: CardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const front = (
     <Image
-      src={getCardUrl(card.type)}
-      width={88}
-      height={124}
+      src="/Cards/Backs/Red Back.png"
+      fill
       alt={card.type}
-    ></Image>
+      className="rounded-xl bg-blue-500"></Image>
   );
   const back = (
     <Image
-      src="/Cards/Backs/Red Back.png"
-      width={88}
-      height={124}
+      src="/Cards/Backs/Blue Back.png"
+      fill
       alt={card.type}
-    ></Image>
+      className="rounded-xl bg-red-500"></Image>
   );
   return (
     <div
       ref={cardRef}
       onClick={() => {
-        setCard({ ...card, visible: !card.visible });
+        setFlipped(!flipped);
       }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          setFlipped((prev) => !prev);
-        }
-      }}
-      className="perspective absolute h-48 w-35 cursor-grab bg-transparent p-0 active:cursor-grabbing"
-    >
+      className="perspective absolute h-48 w-35 cursor-grab bg-transparent p-0 active:cursor-grabbing">
       <div
         className={`preserve-3d relative h-full w-full rounded-xl transition-transform duration-700 ${
           flipped ? "rotate-y-180" : ""
-        } ${isDragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}
-      >
+        } ${isDragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}>
         {/* Front Face */}
-        <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl bg-blue-500 text-white">
+        <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl text-white">
           {front}
         </div>
 
         {/* Back Face */}
-        <div className="backface-hidden absolute flex h-full w-full rotate-y-180 transform items-center justify-center rounded-xl bg-red-500 text-white shadow-inner">
+        <div className="backface-hidden absolute flex h-full w-full rotate-y-180 transform items-center justify-center rounded-xl text-white shadow-inner">
           {back}
         </div>
       </div>
