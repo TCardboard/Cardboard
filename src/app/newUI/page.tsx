@@ -1,16 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/libs/utils";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
 import { type HTMLAttributes, useEffect, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { cn } from "@/libs/utils";
 import { ChatRoom } from "./ChatRoom";
 import { Clock } from "./Clock";
 import { EnterGame } from "./EnterGame";
 import { type CardTypeTemp, PlayerProvider, usePlayer } from "./PlayerContext";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function NewUIPage() {
   return (
@@ -42,16 +42,11 @@ const Board = () => {
 
   return (
     <>
-
-      <PlayerContext.Provider
-        value={{ name, cards, room, setName, setCards, setRoom }}
-      >
-        <WindowContainer className="size-full ">
-          <WindowHeader>Card Board</WindowHeader>
-          <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
-        </WindowContainer>
-        <Clock />
-      </PlayerProvider>
+      <WindowContainer className="size-full ">
+        <WindowHeader>Card Board</WindowHeader>
+        <WindowContent>{name ? <GameRoom /> : <EnterGame />}</WindowContent>
+      </WindowContainer>
+      <Clock />
       <ChatRoom name={name} />
     </>
   );
@@ -149,7 +144,7 @@ const Card = ({ card, rotate }: { card: CardTypeTemp; rotate: number }) => {
       animate: { opacity: 1, x: 0, rotate: rotate / 20 },
       exit: { opacity: 0, y: "25%", rotate: rotate * 0.5 },
     }),
-    [rotate]
+    [rotate],
   );
 
   return (
