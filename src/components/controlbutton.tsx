@@ -1,15 +1,17 @@
 "use client";
 
 import { cn } from "@/components/libs/utils";
-import type { ButtonHTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 type ControlButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  symbol: string;
+  symbol?: string;
+  icon?: ReactNode;
   variant?: "close" | "default";
 };
 
 export function ControlButton({
   symbol,
+  icon,
   className,
   variant = "default",
   ...props
@@ -38,14 +40,15 @@ export function ControlButton({
     <button
       className={cn(baseStyle, closeVariant, className)}
       {...props}
-      type={props.type ?? "button"} 
+      type={props.type ?? "button"}
     >
-      {symbol}
+      {icon ?? symbol}
     </button>
   );
 }
 
 export default function XpWindowControls({
+  // need the fucntionality to handle minimize, maximize, and close actions
   onMinimize,
   onMaximize,
   onClose,
@@ -57,7 +60,15 @@ export default function XpWindowControls({
   return (
     <div className="flex gap-[2px]">
       <ControlButton symbol="─" title="Minimize" onClick={onMinimize} />
-      <ControlButton symbol="□" title="Maximize" onClick={onMaximize} />
+      <ControlButton
+        title="Maximize"
+        onClick={onMaximize}
+        icon={
+          <div className="w-3 h-3 border border-black relative">
+            <div className="absolute top-0 left-0 w-full h-[2px] bg-black" />
+          </div>
+        }
+      />
       <ControlButton
         symbol="✕"
         title="Close"
