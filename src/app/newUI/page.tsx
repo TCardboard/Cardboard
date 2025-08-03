@@ -1,15 +1,10 @@
 "use client";
 
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { ChatRoom } from "./ChatRoom";
-import { Clock } from "./Clock";
-import { EnterGame } from "./EnterGame";
-import { GameRoom } from "./GameRoom";
-import { WindowContainer, WindowContent, WindowHeader } from "./Window";
+import type { CardType } from "@/utils/types";
+import Board from "./Board";
 
 export default function NewUIPage() {
   return (
@@ -28,21 +23,6 @@ export default function NewUIPage() {
     </div>
   );
 }
-
-const Board = () => {
-  const { player } = useLocalPlayer();
-
-  return (
-    <>
-      <WindowContainer className="size-full">
-        <WindowHeader>Card Board</WindowHeader>
-        <WindowContent>{player ? <GameRoom /> : <EnterGame />}</WindowContent>
-      </WindowContainer>
-      <Clock />
-      <ChatRoom />
-    </>
-  );
-};
 
 export function RandomCard({ card }: { card: CardType }) {
   const [rotation, setRotation] = useState<number | null>(null);
