@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "",
-  description: "",
+  title: "Card Board",
+  description: "Freeform card games for playing house rules with friends!",
 };
 
 export default function RootLayout({
