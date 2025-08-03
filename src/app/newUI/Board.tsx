@@ -1,8 +1,5 @@
 "use client";
 
-import XpWindowControls from "@/components/controlbutton";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -14,7 +11,9 @@ import {
 import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
-import { Clock } from "lucide-react";
+import XpWindowControls from "@/components/controlbutton";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import { ChatRoom } from "./ChatRoom";
 import { EnterGame } from "./EnterGame";
 import { GameRoom } from "./GameRoom";
