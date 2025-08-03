@@ -31,7 +31,7 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
   const back = (
     <Image
       className="pointer-events-none"
-      src="/Cards/Backs/Red Back.png"
+      src="/Cards/Backs/Red Back.webp"
       width={88}
       height={124}
       alt={card.type}
