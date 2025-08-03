@@ -37,7 +37,7 @@ export const GameRoom = ({
       {/* right */}
       <PlayerWindow
         className="-translate-y-1/2 absolute top-1/2 right-0 translate-x-1/4"
-        user="Andy"
+        user="Ashton"
         length={4}
       />
       {/* <Hand hand={hand} id={"hand"} /> */}
