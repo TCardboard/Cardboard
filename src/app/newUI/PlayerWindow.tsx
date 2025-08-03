@@ -18,7 +18,7 @@ export const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
       {...props}
       className={cn("w-min min-w-[250px] bg-white", props.className)}
     >
-      <WindowHeader>Player</WindowHeader>
+      <WindowHeader className="px-2">Player</WindowHeader>
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
           <Image

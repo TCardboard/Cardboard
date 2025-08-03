@@ -66,10 +66,10 @@ export const ChatRoom = () => {
   return (
     <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300">
       <WindowHeader
-        className="flex justify-between pr-1 hover:cursor-pointer"
+        className="flex justify-between px-2 pr-1 hover:cursor-pointer"
         onClick={handleTogglePosition}
       >
-        Game Room
+        <span className="pl-0">Game Room</span>
         <XpWindowControls
           controls={["minimize", "maximize", "close"]}
           onMinimize={handleMinimize}
