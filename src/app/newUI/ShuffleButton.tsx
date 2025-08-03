@@ -10,6 +10,7 @@ export function ShuffleButton() {
     <Button
       label={cards.length > 0 ? "Shuffle" : "Deal"}
       onClick={() => newGame()}
+      className="flex h-6 items-center"
     />
   );
 }

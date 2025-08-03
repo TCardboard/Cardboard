@@ -1,5 +1,8 @@
 "use client";
 
+import XpWindowControls from "@/components/controlbutton";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -12,12 +15,10 @@ import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Clock } from "lucide-react";
-import XpWindowControls from "@/components/controlbutton";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
 import { ChatRoom } from "./ChatRoom";
 import { EnterGame } from "./EnterGame";
 import { GameRoom } from "./GameRoom";
+import { ShuffleButton } from "./ShuffleButton";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
 export default function Board() {
@@ -96,7 +97,10 @@ export default function Board() {
         <WindowHeader className="px-2">
           Card Board{" "}
           {player && (
-            <XpWindowControls controls={["logout"]} onLogout={handleLogout} />
+            <span className="flex items-center gap-2">
+              <ShuffleButton />
+              <XpWindowControls controls={["logout"]} onLogout={handleLogout} />
+            </span>
           )}
         </WindowHeader>
         <WindowContent>

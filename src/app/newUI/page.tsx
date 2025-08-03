@@ -21,7 +21,6 @@ export default function NewUIPage() {
       <AnimatePresence mode="wait">
         <Board />
       </AnimatePresence>
-      <ShuffleButton />
     </div>
   );
 }
