@@ -1,5 +1,6 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
+import { internal,api } from "./_generated/api";
 import { cardSchema } from "./schema";
 
 // Return all cards from the database
@@ -35,7 +36,7 @@ export const moveCardToTop = mutation({
     await ctx.db.patch(args.cardId, { z: maxZIndex + 1 });
   },
 });
-
+ 
 // Shuffle all cards in the database: randomize their z-index and set (x, y) to (200, 100)
 export const shuffleCards = mutation({
   handler: async (ctx) => {
@@ -58,7 +59,6 @@ const generateNewCards = ()=>{
       const type = rank + "-" + suit
       newCards.push({ type: type, playerId: null, visible: true, x: 200, y: 100, z: 1 })
     }
-    
   }
   return newCards
 }
@@ -71,6 +71,7 @@ export const newGame = mutation({
       await ctx.db.delete(card._id);
     }
     await Promise.all(newCards.map((card) => ctx.db.insert("cards", card)));
+    await ctx.runMutation(api.cards.shuffleCards);
   },
 });
 
