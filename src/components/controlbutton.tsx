@@ -19,9 +19,7 @@ export function ControlButton({
   const baseStyle = `
     w-6 h-6
     flex items-center justify-center
-    text-xs
-    font-bold
-    text-black
+    text-xs font-bold text-black
     bg-[#d4d0c8]
     border border-[#808080]
     shadow-[inset_1px_1px_0px_#fff,inset_-1px_-1px_0px_#404040]
@@ -48,7 +46,6 @@ export function ControlButton({
 }
 
 export default function XpWindowControls({
-  // need the fucntionality to handle minimize, maximize, and close actions
   onMinimize,
   onMaximize,
   onClose,
@@ -64,8 +61,8 @@ export default function XpWindowControls({
         title="Maximize"
         onClick={onMaximize}
         icon={
-          <div className="w-3 h-3 border border-black relative">
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-black" />
+          <div className="relative h-3 w-3 border border-black">
+            <div className="absolute top-0 left-0 h-[2px] w-full bg-black" />
           </div>
         }
       />
