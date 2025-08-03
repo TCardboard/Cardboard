@@ -12,57 +12,16 @@ import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Button } from "@/components/ui/button";
-import type { CardType, UserType } from "@/utils/types";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
-
-const initialCards: CardType[] = [
-  {
-    _id: "card-1" as Id<"cards">,
-    x: 50,
-    y: 50,
-    _creationTime: 0,
-    type: "",
-    playerId: null,
-    visible: false,
-    z: 0,
-  },
-  {
-    _id: "card-2" as Id<"cards">,
-    x: 180,
-    y: 80,
-    _creationTime: 0,
-    type: "",
-    playerId: null,
-    visible: false,
-    z: 0,
-  },
-  {
-    _id: "card-3" as Id<"cards">,
-    x: 320,
-    y: 120,
-    _creationTime: 0,
-    type: "",
-    playerId: null,
-    visible: false,
-    z: 0,
-  },
-];
-
-const dummyPlayer: UserType = {
-  _id: "player-1" as Id<"users">,
-  name: "Player 1",
-  _creationTime: 0,
-};
-
-const initialHand: CardType[] = [];
 
 export default function GamingPage() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
   const updateAllCards = useMutation(api.cards.updateAllCards);
 
-  // const { player } = useLocalPlayer();
-  const player = dummyPlayer;
+  const { player } = useLocalPlayer();
 
   const hand = cards.filter((c) => c.playerId === player?._id);
   const canvasCards = cards.filter((c) => c.playerId !== player?._id);
