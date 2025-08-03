@@ -109,7 +109,6 @@ export default function Board() {
           {player ? (
             <GameRoom
               hand={hand}
-              setHand={setHand}
               canvasCards={canvasCards}
               setCanvasCards={setCanvasCards}
             />
