@@ -54,7 +54,7 @@ type XpWindowControlsProps = {
 };
 
 export default function XpWindowControls({
-  controls = ["minimize", "maximize", "close"], 
+  controls = ["minimize", "maximize", "close", "logout"], 
   onMinimize,
   onMaximize,
   onClose,
