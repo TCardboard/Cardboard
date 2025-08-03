@@ -29,8 +29,7 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
       {...props}
       className={cn("w-min min-w-[250px] bg-white", props.className)}
     >
-      <WindowHeader>{playerName}</WindowHeader>
-
+      <WindowHeader className="px-2">{playerName}</WindowHeader>
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
           <p className="absolute right-0 bottom-0 z-50 w-min whitespace-nowrap bg-secondary p-1 py-0 text-white">

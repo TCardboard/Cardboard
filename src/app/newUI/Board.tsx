@@ -99,7 +99,9 @@ export default function Board() {
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <WindowContainer className="size-full">
-        <WindowHeader>Card Board {player && <XpWindowControls controls={["logout"]} onLogout={handleLogout} />}</WindowHeader>
+        <WindowHeader className="px-2">
+          Card Board {player && <XpWindowControls controls={["logout"]} onLogout={handleLogout} />}
+        </WindowHeader>
         <WindowContent>
           {player ? (
             <GameRoom
