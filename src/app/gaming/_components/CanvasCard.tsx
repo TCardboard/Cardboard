@@ -27,9 +27,9 @@ export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
     const delta = Math.sqrt(finalT.x ** 2 + finalT.y ** 2);
     if (delta > margin) {
       // Flip the card by updating the visible field on the server
-      const updatedCard = { ...card, visible: !card.visible };
-      updateCard({ card: updatedCard, cardId: card._id });
-      setCard(updatedCard);
+      // const updatedCard = { ...card, visible: !card.visible };
+      // updateCard({ card: updatedCard, cardId: card._id });
+      // setCard(updatedCard);
     }
     console.log(delta);
     setFinalT({ x: 0, y: 0 });
