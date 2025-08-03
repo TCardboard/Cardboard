@@ -169,6 +169,7 @@
 
 body {
   letter-spacing: var(--tracking-normal);
+  max-height: 100dvh;
 }
 
 @layer base {
