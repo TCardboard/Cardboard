@@ -116,11 +116,13 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
         left: card.x,
         top: card.y,
         zIndex: zIndex,
-      }}>
+      }}
+    >
       <div
         className={`preserve-3d relative h-full w-full rounded-xl transition-transform duration-700 ${
           !card.visible ? "rotate-y-180" : ""
-        } ${dragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}>
+        } ${dragging ? "shadow-[0_8px_30px_rgba(0,0,0,0.4)]" : "shadow-2xl"}`}
+      >
         {/* Front Face */}
         <div className="backface-hidden absolute flex h-full w-full items-center justify-center rounded-xl bg-blue-500 text-white">
           {front}

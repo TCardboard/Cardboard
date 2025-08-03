@@ -47,14 +47,25 @@ export const shuffleCards = mutation({
   },
 });
 
+const suits = ["hearts","spade","diamonds","clubs"]
+const ranks = ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"]
+const generateNewCards = ()=>{
+  const newCards = []
+  for (let i = 0; i < suits.length; i++) {
+    const suit = suits[i];
+    for (let j = 0; j<ranks.length;j++){
+      const rank = ranks[j]
+      const type = rank + "-" + suit
+      newCards.push({ type: type, playerId: null, visible: true, x: 200, y: 100, z: 1 })
+    }
+    
+  }
+  return newCards
+}
 // New game: wipe DB and insert a new set of cards
 export const newGame = mutation({
   handler: async (ctx) => {
-    const newCards = [
-      { type: "7-hearts", playerId: null, visible: true, x: 200, y: 100, z: 1 },
-      { type: "8-hearts", playerId: null, visible: true, x: 200, y: 100, z: 2 },
-      { type: "9-hearts", playerId: null, visible: true, x: 200, y: 100, z: 3 },
-    ];
+    const newCards = generateNewCards()
     const existingCards = await ctx.db.query("cards").collect();
     for (const card of existingCards) {
       await ctx.db.delete(card._id);
