@@ -31,6 +31,10 @@ export const PAGES_ROUTES: RouteSection = {
     {
       "url": "/",
       "name": "Home"
+    },
+    {
+      "url": "/startScreen/",
+      "name": "StartScreen"
     }
   ]
 };
