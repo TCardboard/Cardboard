@@ -1,5 +1,8 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import type { CardType } from "@/utils/types";
 import {
   DndContext,
   type DragEndEvent,
@@ -11,15 +14,18 @@ import {
 import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
-import { Button } from "@/components/ui/button";
-import { useLocalPlayer } from "@/libs/utils/hooks";
-import type { CardType } from "@/utils/types";
+import { useEffect } from "react";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
 
 export default function GamingPage() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
   const updateAllCards = useMutation(api.cards.updateAllCards);
+  const newGame = useMutation(api.cards.newGame);
+
+  useEffect(() => {
+    newGame();
+  }, [newGame]);
 
   const { player } = useLocalPlayer();
 
