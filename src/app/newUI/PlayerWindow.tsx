@@ -2,7 +2,7 @@ import { api } from "@root/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
-import type { HTMLAttributes } from "react";
+import { type HTMLAttributes, use } from "react";
 import { cn } from "@/libs/utils";
 import type { CardType, UserType } from "@/utils/types";
 import { RandomCard } from "./page";
@@ -13,9 +13,11 @@ export type PlayerWindowProps = HTMLAttributes<HTMLDivElement> & {
 };
 export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
   let cards: CardType[] = [];
-  const playerName = "No Player";
-  if (user != null) {
+  let playerName = "No Player";
+  if (user) {
+    playerName = user.name;
     cards = useQuery(api.cards.getPlayersCards, { userId: user._id }) ?? [];
+    console.log(user._id);
   }
 
   // filter cards by player here
@@ -26,7 +28,7 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
       {...props}
       className={cn("w-min min-w-[250px] bg-white", props.className)}
     >
-      <WindowHeader>Player</WindowHeader>
+      <WindowHeader>{playerName}</WindowHeader>
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
           <Image
