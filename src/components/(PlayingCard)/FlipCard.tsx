@@ -46,6 +46,7 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
 
   const dragStart = useRef({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
+  const dragThreshold = 5; // pixels
 
   const bringToFront = () => {
     globalZIndex += 1;
@@ -67,7 +68,15 @@ export default function FlipCard({ card, setCard }: FlipCardProps) {
       if (!dragging) return;
       const x = e.clientX - dragStart.current.x;
       const y = e.clientY - dragStart.current.y;
-      setHasDragged(true);
+
+      // Only consider it dragging if the mouse has moved more than the threshold
+      const deltaX = Math.abs(e.clientX - (dragStart.current.x + card.x));
+      const deltaY = Math.abs(e.clientY - (dragStart.current.y + card.y));
+
+      if (deltaX > dragThreshold || deltaY > dragThreshold) {
+        setHasDragged(true);
+      }
+
       setCard({ ...card, x, y });
     };
 
