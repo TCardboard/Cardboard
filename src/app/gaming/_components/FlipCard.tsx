@@ -25,18 +25,18 @@ export default function FlipCard({
   const cardRef = useRef<HTMLDivElement>(null);
   const front = (
     <Image
-      src="/Cards/Backs/Red Back.webp"
+      src={getCardUrl(card.type)}
       fill
       alt={card.type}
-      className="rounded-xl bg-blue-500"
+      className="rounded-xl bg-transparent"
     ></Image>
   );
   const back = (
     <Image
-      src="/Cards/Backs/Blue Back.webp"
+      src="/Cards/Backs/Red Back.webp"
       fill
       alt={card.type}
-      className="rounded-xl bg-red-500"
+      className="rounded-xl bg-transparent"
     ></Image>
   );
   return (
