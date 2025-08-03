@@ -26,6 +26,9 @@ export function ControlButton({
     active:translate-y-[1px]
     transition-all
     rounded-sm
+    p-1
+    min-h-[1.5rem]
+    min-w-[1.5rem]
   `;
 
   const closeVariant =
@@ -69,8 +72,10 @@ export default function XpWindowControls({
           title="Maximize"
           onClick={onMaximize}
           icon={
-            <div className="relative h-3 w-3 border border-black">
-              <div className="absolute top-0 left-0 h-[2px] w-full bg-black" />
+            <div className="flex items-center justify-center h-full">
+              <div className="relative border border-black aspect-square h-[0.75rem]">
+                <div className="absolute top-0 left-0 h-[2px] w-full bg-black" />
+              </div>
             </div>
           }
         />
@@ -90,21 +95,23 @@ export default function XpWindowControls({
           title="Logout"
           onClick={onLogout}
           icon={
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-3 w-3 stroke-black"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              role="img"
-              aria-labelledby="logoutTitle">
-              <title id="logoutTitle">Logout icon</title>
-              <path d="M16 17l5-5-5-5" />
-              <path d="M21 12H9" />
-              <path d="M12 19v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" />
-            </svg>
+            <div className="flex items-center justify-center h-full">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="stroke-black aspect-square h-[0.75rem]"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                role="img"
+                aria-labelledby="logoutTitle">
+                <title id="logoutTitle">Logout icon</title>
+                <path d="M16 17l5-5-5-5" />
+                <path d="M21 12H9" />
+                <path d="M12 19v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" />
+              </svg>
+            </div>
           }
         />
       )}
