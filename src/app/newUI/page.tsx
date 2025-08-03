@@ -2,11 +2,9 @@
 
 import { useLocalPlayer } from "@/libs/utils/hooks";
 import type { CardType } from "@/utils/types";
-import { api } from "@root/convex/_generated/api";
-import { useMutation } from "convex/react";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import CanvasCard from "../gaming/_components/CanvasCard";
+import { useEffect, useMemo, useState } from "react";
 import { ChatRoom } from "./ChatRoom";
 import { Clock } from "./Clock";
 import { EnterGame } from "./EnterGame";
@@ -47,33 +45,37 @@ const Board = () => {
 };
 
 export function RandomCard({ card }: { card: CardType }) {
-  const updateCard = useMutation(api.cards.updateCard);
-  const setCard = (updatedCard: CardType) => {
-    updateCard({ cardId: card._id, card: updatedCard });
-  };
-  return <CanvasCard id={card._id} card={card} setCard={setCard} />;
+  const [rotation, setRotation] = useState<number | null>(null);
+
+  useEffect(() => {
+    setRotation(Math.random() * 360 - 180);
+  }, []);
+
+  if (rotation === null) return null; // optional: skeleton here
+
+  return <Card card={card} rotate={rotation} />;
 }
 
 // TODO: Ashton could you add this to Kevin's CanvasCard component?
 
-// const Card = ({ card, rotate }: { card: CardTypeTemp; rotate: number }) => {
-//   const cardVariants = useMemo(
-//     () => ({
-//       initial: { opacity: 0, x: "100%", rotate },
-//       animate: { opacity: 1, x: 0, rotate: rotate / 20 },
-//       exit: { opacity: 0, y: "25%", rotate: rotate * 0.5 },
-//     }),
-//     [rotate]
-//   );
+const Card = ({ card, rotate }: { card: CardType; rotate: number }) => {
+  const cardVariants = useMemo(
+    () => ({
+      initial: { opacity: 0, x: "100%", rotate },
+      animate: { opacity: 1, x: 0, rotate: rotate / 20 },
+      exit: { opacity: 0, y: "25%", rotate: rotate * 0.5 },
+    }),
+    [rotate]
+  );
 
-//   return (
-//     <motion.div
-//       key={card.id}
-//       variants={cardVariants}
-//       initial="initial"
-//       animate="animate"
-//       exit="exit"
-//       className=" h-min min-h-[calc(35px*1.8)] min-w-[calc(25px*1.8)] border border-white bg-secondary shadow-2xl"
-//     />
-//   );
-// };
+  return (
+    <motion.div
+      key={card._id}
+      variants={cardVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      className=" h-min min-h-[calc(35px*1.8)] min-w-[calc(25px*1.8)] border border-white bg-secondary shadow-2xl"
+    />
+  );
+};

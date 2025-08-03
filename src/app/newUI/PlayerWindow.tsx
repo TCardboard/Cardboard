@@ -11,6 +11,7 @@ export const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
   const cards = useQuery(api.cards.getAllCards) ?? [];
 
   // filter cards by player here
+  console.log(cards);
 
   return (
     <WindowContainer
