@@ -13,7 +13,6 @@ import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation, useQuery } from "convex/react";
 import { Clock } from "lucide-react";
-import { useEffect } from "react";
 import { ChatRoom } from "./ChatRoom";
 import { EnterGame } from "./EnterGame";
 import { GameRoom } from "./GameRoom";
@@ -100,7 +99,7 @@ export default function Board() {
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <WindowContainer className="size-full">
-        <WindowHeader>Card Board <XpWindowControls controls={["logout"]} onLogout={handleLogout} /></WindowHeader>
+        <WindowHeader>Card Board {player && <XpWindowControls controls={["logout"]} onLogout={handleLogout} />}</WindowHeader>
         <WindowContent>
           {player ? (
             <GameRoom
