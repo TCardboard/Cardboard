@@ -1,16 +1,27 @@
-import { useState } from "react";
+import { api } from "@root/convex/_generated/api";
+import type { Id } from "@root/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { usePlayer } from "./PlayerContext";
+import { Input } from "@/components/ui/input";
+import { useLocalPlayer } from "@/libs/utils/hooks";
 
+// TODO
 export const EnterGame = () => {
-  const { setName } = usePlayer();
+  const login = useMutation(api.users.login);
+  const { setPlayer } = useLocalPlayer();
   const [inputName, setInputName] = useState("");
-  const [room, setRoom] = useState("");
+  const [inputRoom, setInputRoom] = useState("");
 
-  const handleSetName = () => {
-    setName(inputName);
+  const handleSetName = async () => {
+    const loginDetails = { name: inputName, room: inputRoom };
+    const user = await login(loginDetails);
+    if (!user) {
+      console.error("Failed to login with user:", JSON.stringify(loginDetails));
+      return;
+    }
+    setPlayer(user);
   };
 
   return (
@@ -34,7 +45,10 @@ export const EnterGame = () => {
           </div>
           <div className="flex flex-col">
             <p>Room Id:</p>
-            <Input value={room} onChange={(e) => setRoom(e.target.value)} />
+            <Input
+              value={inputRoom}
+              onChange={(e) => setInputRoom(e.target.value)}
+            />
           </div>
           <Button className="mt-2" onClick={handleSetName}>
             Enter

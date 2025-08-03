@@ -1,16 +1,7 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 
-export const createUser = mutation({
-  args: {
-    name: v.string(),
-  },
-  handler: async (ctx, args) => {
-    await ctx.db.insert("users", { name: args.name });
-  },
-});
-
-export const getUser = mutation({
+export const getUser = query({
   args: {
     userId: v.id("users"),
   },
@@ -18,3 +9,28 @@ export const getUser = mutation({
     return await ctx.db.get(args.userId);
   },
 });
+
+export const login = mutation({
+  args: {
+    name: v.string(),
+    room: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existingUser = await ctx.db.query("users").withIndex("byName", (q) =>
+      q.eq("name", args.name)
+    ).unique();
+    if (existingUser) {
+      await ctx.db.patch(existingUser._id, {
+        room: args.room,
+      });
+    } else {
+      await ctx.db.insert("users", {
+        name: args.name,
+        room: args.room,
+      });
+    }
+    return await ctx.db.query("users").withIndex("byName", (q) =>
+      q.eq("name", args.name)
+    ).unique();
+  }
+})

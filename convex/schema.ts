@@ -12,6 +12,7 @@ export const cardSchema = {
 
 export const userSchema = {
   name: v.string(),
+  room: v.string(),
 };
 
 export const messageSchema = {
@@ -21,6 +22,6 @@ export const messageSchema = {
 
 export default defineSchema({
   cards: defineTable(cardSchema),
-  users: defineTable(userSchema),
+  users: defineTable(userSchema).index("byName", ["name"]).index("byRoom", ["room"]),
   messages: defineTable(messageSchema),
 });

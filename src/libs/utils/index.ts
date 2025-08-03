@@ -15,8 +15,3 @@ export function stripUnknownFields(
     Object.entries(obj).filter(([key]) => Object.hasOwn(allowedKeys, key)),
   );
 }
-
-export const useLocalPlayer = () => {
-  const [player, setPlayer] = useLocalStorage<UserType | null>("player", null);
-  return { player, setPlayer };
-};

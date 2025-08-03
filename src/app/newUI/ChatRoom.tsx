@@ -1,13 +1,15 @@
 "use client";
 
-import { useMutation, useQuery } from "convex/react";
-import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/libs/utils";
+import { useLocalPlayer } from "@/libs/utils/hooks";
+import { useMutation, useQuery } from "convex/react";
+import { useEffect, useRef, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
-export const ChatRoom = ({ name }: { name: string }) => {
+export const ChatRoom = () => {
+  const { player } = useLocalPlayer();
   const messages = useQuery(api.chat.getMessages);
   const sendMessage = useMutation(api.chat.sendMessage);
 
@@ -27,7 +29,12 @@ export const ChatRoom = ({ name }: { name: string }) => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter" && inputValue.trim() !== "") {
-      sendMessage({ user: name, body: inputValue.trim() });
+      if (!player) {
+        console.log("Player not set, cannot send message");
+        return;
+      }
+
+      sendMessage({ user: player.name, body: inputValue.trim() });
       setInputValue("");
     }
   };
@@ -38,7 +45,7 @@ export const ChatRoom = ({ name }: { name: string }) => {
     setIsMovedDown((prev) => !prev);
   };
 
-  if (!name) return null;
+  if (!player) return null;
 
   return (
     <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300 ">
@@ -57,7 +64,7 @@ export const ChatRoom = ({ name }: { name: string }) => {
             "max-h-[200px] min-h-[200px] space-y-1 overflow-y-scroll",
             isMovedDown && "min-h-0 py-0 transition "
           )}
-        > 
+        >
           {(messages ?? []).map((chat, index) => (
             <div key={index} className="w-full break-words">
               <span className="font-bold">{chat.user}: </span>
