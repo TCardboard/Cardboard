@@ -1,8 +1,6 @@
 import { v } from "convex/values";
-import { internalMutation, mutation, query } from "./_generated/server";
-import { internal,api } from "./_generated/api";
+import { mutation, query } from "./_generated/server";
 import { cardSchema } from "./schema";
-import { Id } from "./_generated/dataModel";
 
 // Return all cards from the database
 export const getAllCards = query({
@@ -11,14 +9,16 @@ export const getAllCards = query({
   },
 });
 
-
 // Update a single card in the database by ID
 export const getPlayersCards = query({
   args: {
     userId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    return await ctx.db.query("cards").filter((q) => q.eq(q.field("playerId"),args.userId)).collect();
+    return await ctx.db
+      .query("cards")
+      .filter((q) => q.eq(q.field("playerId"), args.userId))
+      .collect();
   },
 });
 
@@ -49,42 +49,68 @@ export const moveCardToTop = mutation({
   },
 });
 
-// Shuffle all cards in the database: randomize their z-index and set (x, y) to (200, 100)
-export const shuffleCards = mutation({
-  handler: async (ctx) => {
-    const existingCards = await ctx.db.query("cards").collect();
-    const shuffledCards = existingCards.sort(() => Math.random() - 0.5);
-    shuffledCards.forEach((card, i) => {
-      ctx.db.patch(card._id, { z: i, x: 750, y: 300, visible: false });
-    });
-  },
-});
-
-const suits = ["hearts","spade","diamonds","clubs"]
-const ranks = ["Ace","2","3","4","5","6","7","8","9","10","Jack","Queen","King"]
-const generateNewCards = ()=>{
-  const newCards = []
+const suits = ["hearts", "spade", "diamonds", "clubs"];
+const ranks = [
+  "Ace",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "10",
+  "Jack",
+  "Queen",
+  "King",
+];
+const generateNewCards = () => {
+  const newCards = [];
   for (let i = 0; i < suits.length; i++) {
     const suit = suits[i];
-    for (let j = 0; j<ranks.length;j++){
-      const rank = ranks[j]
-      const type = rank + "-" + suit
-      newCards.push({ type: type, playerId:null, visible: true, x: 0, y: 0, z: 1})
+    for (let j = 0; j < ranks.length; j++) {
+      const rank = ranks[j];
+      const type = rank + "-" + suit;
+      newCards.push({
+        type: type,
+        playerId: null,
+        z: i,
+        x: 750,
+        y: 300,
+        visible: false,
+      });
     }
   }
-  return newCards
+  shuffle(newCards);
+  return newCards;
+};
+
+function shuffle(array: Array<unknown>) {
+  let currentIndex = array.length;
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
 }
 
 // New game: wipe DB and insert a new set of cards
 export const newGame = mutation({
   handler: async (ctx) => {
-    const newCards = generateNewCards()
     const existingCards = await ctx.db.query("cards").collect();
     for (const card of existingCards) {
       await ctx.db.delete(card._id);
     }
+
+    const newCards = generateNewCards();
+    console.log(newCards.map((card) => card.type));
     await Promise.all(newCards.map((card) => ctx.db.insert("cards", card)));
-    await ctx.runMutation(api.cards.shuffleCards);
+
     const messages = await ctx.db.query("messages").collect();
     for (const message of messages) {
       await ctx.db.delete(message._id);
