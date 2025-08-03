@@ -49,10 +49,12 @@ export default function XpWindowControls({
   onMinimize,
   onMaximize,
   onClose,
+  onLogout,
 }: {
   onMinimize?: () => void;
   onMaximize?: () => void;
   onClose?: () => void;
+  onLogout?: () => void;
 }) {
   return (
     <div className="flex gap-[2px]">
@@ -71,6 +73,28 @@ export default function XpWindowControls({
         title="Close"
         variant="close"
         onClick={onClose}
+      />
+      <ControlButton
+        title="Logout"
+        onClick={onLogout}
+        icon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-3 w-3 stroke-black"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            role="img"
+            aria-labelledby="logoutTitle"
+          >
+            <title id="logoutTitle">Logout icon</title>
+            <path d="M16 17l5-5-5-5" />
+            <path d="M21 12H9" />
+            <path d="M12 19v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" />
+          </svg>
+        }
       />
     </div>
   );
