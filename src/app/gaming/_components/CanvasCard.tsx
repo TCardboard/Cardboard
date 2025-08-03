@@ -75,10 +75,7 @@ export default function CanvasCard({ id, card, setCard }: CanvasCardProps) {
           setCard(updatedCard);
         }}
         isDragging={isDragging}
-        front={<p>Front Content</p>}
-        back={<p>Back Content</p>}
         card={card}
-        setCard={setCard}
       />
     </div>
   );
