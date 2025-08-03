@@ -45,57 +45,72 @@ export function ControlButton({
   );
 }
 
-export default function XpWindowControls({
-  onMinimize,
-  onMaximize,
-  onClose,
-  onLogout,
-}: {
+type XpWindowControlsProps = {
+  controls?: ("minimize" | "maximize" | "close" | "logout")[];
   onMinimize?: () => void;
   onMaximize?: () => void;
   onClose?: () => void;
   onLogout?: () => void;
-}) {
+};
+
+export default function XpWindowControls({
+  controls = ["minimize", "maximize", "close"], 
+  onMinimize,
+  onMaximize,
+  onClose,
+  onLogout,
+}: XpWindowControlsProps) {
   return (
     <div className="flex gap-[2px]">
-      <ControlButton symbol="─" title="Minimize" onClick={onMinimize} />
-      <ControlButton
-        title="Maximize"
-        onClick={onMaximize}
-        icon={
-          <div className="relative h-3 w-3 border border-black">
-            <div className="absolute top-0 left-0 h-[2px] w-full bg-black" />
-          </div>
-        }
-      />
-      <ControlButton
-        symbol="✕"
-        title="Close"
-        variant="close"
-        onClick={onClose}
-      />
-      <ControlButton
-        title="Logout"
-        onClick={onLogout}
-        icon={
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-3 w-3 stroke-black"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            role="img"
-            aria-labelledby="logoutTitle"
-          >
-            <title id="logoutTitle">Logout icon</title>
-            <path d="M16 17l5-5-5-5" />
-            <path d="M21 12H9" />
-            <path d="M12 19v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" />
-          </svg>
-        }
-      />
+      {controls.includes("minimize") && (
+        <ControlButton symbol="─" title="Minimize" onClick={onMinimize} />
+      )}
+
+      {controls.includes("maximize") && (
+        <ControlButton
+          title="Maximize"
+          onClick={onMaximize}
+          icon={
+            <div className="relative h-3 w-3 border border-black">
+              <div className="absolute top-0 left-0 h-[2px] w-full bg-black" />
+            </div>
+          }
+        />
+      )}
+
+      {controls.includes("close") && (
+        <ControlButton
+          symbol="✕"
+          title="Close"
+          variant="close"
+          onClick={onClose}
+        />
+      )}
+
+      {controls.includes("logout") && (
+        <ControlButton
+          title="Logout"
+          onClick={onLogout}
+          icon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-3 w-3 stroke-black"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              role="img"
+              aria-labelledby="logoutTitle"
+            >
+              <title id="logoutTitle">Logout icon</title>
+              <path d="M16 17l5-5-5-5" />
+              <path d="M21 12H9" />
+              <path d="M12 19v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v2" />
+            </svg>
+          }
+        />
+      )}
     </div>
   );
 }
