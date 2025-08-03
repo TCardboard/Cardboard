@@ -1,14 +1,22 @@
-import { cn } from "@/libs/utils";
 import { api } from "@root/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
 import type { HTMLAttributes } from "react";
+import { cn } from "@/libs/utils";
+import type { CardType, UserType } from "@/utils/types";
 import { RandomCard } from "./page";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
-export const PlayerWindow = ({ ...props }: HTMLAttributes<HTMLDivElement>) => {
-  const cards = useQuery(api.cards.getAllCards) ?? [];
+export type PlayerWindowProps = HTMLAttributes<HTMLDivElement> & {
+  user: UserType;
+};
+export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
+  let cards: CardType[] = [];
+  const playerName = "No Player";
+  if (user != null) {
+    cards = useQuery(api.cards.getPlayersCards, { userId: user._id }) ?? [];
+  }
 
   // filter cards by player here
   console.log(cards);

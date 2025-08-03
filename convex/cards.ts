@@ -10,6 +10,17 @@ export const getAllCards = query({
   },
 });
 
+
+// Update a single card in the database by ID
+export const getPlayersCards = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("cards").filter((q) => q.eq(q.field("playerId"),args.userId));
+  },
+});
+
 // Update a single card in the database by ID
 export const updateCard = mutation({
   args: {
