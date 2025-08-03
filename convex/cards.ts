@@ -55,7 +55,7 @@ export const shuffleCards = mutation({
     const existingCards = await ctx.db.query("cards").collect();
     const shuffledCards = existingCards.sort(() => Math.random() - 0.5);
     shuffledCards.forEach((card, i) => {
-      ctx.db.patch(card._id, { z: i, x: 560, y: 300, visible: false });
+      ctx.db.patch(card._id, { z: i, x: 750, y: 300, visible: false });
     });
   },
 });
@@ -69,7 +69,7 @@ const generateNewCards = ()=>{
     for (let j = 0; j<ranks.length;j++){
       const rank = ranks[j]
       const type = rank + "-" + suit
-      newCards.push({ type: type, playerId:null, visible: true, x: 400, y: 200, z: 1})
+      newCards.push({ type: type, playerId:null, visible: true, x: 0, y: 0, z: 1})
     }
   }
   return newCards
