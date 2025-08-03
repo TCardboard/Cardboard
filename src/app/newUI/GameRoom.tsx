@@ -18,7 +18,12 @@ export const GameRoom = ({
   setCanvasCards,
   hand,
 }: GameRoomProps) => {
-  const users = useQuery(api.users.getAllUsers) ?? [];
+  // const users = useQuery(api.users.getAllUsers) ?? [];
+  const cards = useQuery(api.cards.getAllCards) ?? [];
+  const kevinCards = cards.filter((card) => card.x < 300);
+  const ashtonCards = cards.filter((card) => card.x > 1200);
+  const nateCards = cards.filter((card) => card.x >= 300 && card.x <= 1200 && card.y < 150);
+
   return (
     <>
       <Canvas cards={canvasCards} setCards={setCanvasCards} />
@@ -26,19 +31,19 @@ export const GameRoom = ({
       <PlayerWindow
         className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2"
         user="Nate"
-        length={12}
+        length={nateCards.length}
       />
       {/* left */}
       <PlayerWindow
         className="-translate-x-1/4 -translate-y-1/2 absolute top-1/2 left-0"
         user="Kevin"
-        length={8}
+        length={kevinCards.length}
       />
       {/* right */}
       <PlayerWindow
         className="-translate-y-1/2 absolute top-1/2 right-0 translate-x-1/4"
         user="Ashton"
-        length={4}
+        length={ashtonCards.length}
       />
       {/* <Hand hand={hand} id={"hand"} /> */}
     </>
