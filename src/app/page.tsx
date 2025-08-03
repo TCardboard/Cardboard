@@ -45,7 +45,7 @@ export default function Home() {
   const handleClose = () => alert("Close clicked");
 
   return (
-    <main className="flex flex-1 flex-col p-4">
+    <main className="relative flex h-dvh max-h-dvh flex-1 flex-col overflow-hidden p-4">
       <div className="flex min-h-screen flex-col items-center justify-between gap-6 p-24">
         <XpWindowControls
           onMinimize={handleMinimize}

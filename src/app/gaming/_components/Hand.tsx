@@ -13,29 +13,31 @@ export type HandProps = {
 
 export default function Hand({ id, hand, setHand }: HandProps) {
   const { isOver, setNodeRef } = useDroppable({ id });
+
+  console.log(hand);
+
   return (
-    <div
-      ref={setNodeRef}
-      className={cn(
-        "flex min-h-[140px] flex-row items-center justify-center gap-2 rounded-lg border-2 p-2",
-        isOver
-          ? "border-yellow-500 bg-yellow-200"
-          : "border-gray-300 bg-gray-100"
-      )}
-    >
-      <div className="font-bold">Hand</div>
-      {hand.map((card) => (
-        <HandCard
-          key={card._id}
-          id={card._id}
-          card={card}
-          setCard={(updatedCard: CardType) =>
-            setHand((prev: CardType[]) =>
-              prev.map((c) => (c._id === card._id ? updatedCard : c))
-            )
-          }
-        />
-      ))}
+    <div className="-translate-x-1/2 absolute bottom-0 left-1/2 w-full px-64">
+      <div
+        ref={setNodeRef}
+        className={cn(
+          "flex min-h-[140px] w-full flex-row items-center justify-center gap-2 rounded-lg border-2 border-b-0 p-2",
+          isOver && "border-yellow-500 bg-yellow-200"
+        )}>
+        <div className="font-bold">Hand</div>
+        {hand.map((card) => (
+          <HandCard
+            key={card._id}
+            id={card._id}
+            card={card}
+            setCard={(updatedCard: CardType) =>
+              setHand((prev: CardType[]) =>
+                prev.map((c) => (c._id === card._id ? updatedCard : c))
+              )
+            }
+          />
+        ))}
+      </div>
     </div>
   );
 }

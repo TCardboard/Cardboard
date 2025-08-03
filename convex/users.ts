@@ -10,6 +10,11 @@ export const getUser = query({
   },
 });
 
+export const getAllUsers = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("users").collect();
+  },
+});
 export const login = mutation({
   args: {
     name: v.string(),

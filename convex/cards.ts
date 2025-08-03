@@ -2,11 +2,23 @@ import { v } from "convex/values";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { internal,api } from "./_generated/api";
 import { cardSchema } from "./schema";
+import { Id } from "./_generated/dataModel";
 
 // Return all cards from the database
 export const getAllCards = query({
   handler: async (ctx) => {
     return await ctx.db.query("cards").collect();
+  },
+});
+
+
+// Update a single card in the database by ID
+export const getPlayersCards = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.query("cards").filter((q) => q.eq(q.field("playerId"),args.userId)).collect();
   },
 });
 
@@ -57,7 +69,7 @@ const generateNewCards = ()=>{
     for (let j = 0; j<ranks.length;j++){
       const rank = ranks[j]
       const type = rank + "-" + suit
-      newCards.push({ type: type, playerId: null, visible: true, x: 200, y: 100, z: 1 })
+      newCards.push({ type: type, playerId:null, visible: true, x: 200, y: 100, z: 1})
     }
   }
   return newCards
