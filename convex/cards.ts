@@ -85,6 +85,10 @@ export const newGame = mutation({
     }
     await Promise.all(newCards.map((card) => ctx.db.insert("cards", card)));
     await ctx.runMutation(api.cards.shuffleCards);
+    const messages = await ctx.db.query("messages").collect();
+    for (const message of messages) {
+      await ctx.db.delete(message._id);
+    }
   },
 });
 
