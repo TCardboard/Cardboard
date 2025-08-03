@@ -27,7 +27,7 @@ export default function FlipCard({ isDragging, card, setCard }: CardProps) {
   );
   const back = (
     <Image
-      src="/Cards/Backs/Red Back.png"
+      src="/Cards/Backs/Red Back.webp"
       width={88}
       height={124}
       alt={card.type}
