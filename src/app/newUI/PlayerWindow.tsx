@@ -2,9 +2,11 @@ import { api } from "@root/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { AnimatePresence, motion, stagger } from "motion/react";
 import Image from "next/image";
+
 import { type HTMLAttributes, use } from "react";
 import { cn } from "@/libs/utils";
 import type { CardType, UserType } from "@/utils/types";
+
 import { RandomCard } from "./page";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
@@ -20,7 +22,6 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
     console.log(user._id);
   }
 
-  // filter cards by player here
   console.log(cards);
 
   return (
@@ -29,8 +30,12 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
       className={cn("w-min min-w-[250px] bg-white", props.className)}
     >
       <WindowHeader>{playerName}</WindowHeader>
+
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
+          <p className="absolute right-0 bottom-0 z-50 w-min whitespace-nowrap bg-secondary p-1 py-0 text-white">
+            {cards.length}
+          </p>
           <Image
             fill
             src="/player.png"
@@ -41,11 +46,10 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
         </div>
 
         <motion.div
-          className="*:-mr-9 flex items-center justify-center"
+          className="*:-mr-10.5 flex max-w-[250px] items-center justify-between"
           initial="initial"
           animate="animate"
-          transition={{ delayChildren: stagger(0.4) }}
-        >
+          transition={{ delayChildren: stagger(0.4) }}>
           <AnimatePresence mode="popLayout">
             {cards.map((card) => {
               return <RandomCard key={card._id} card={card} />;

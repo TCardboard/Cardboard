@@ -31,12 +31,13 @@ export default function HandCard({ id, card, setCard }: HandCardProps) {
         isDragging
           ? "z-50 cursor-grab bg-blue-200 transition-none"
           : "bg-gray-200 transition-shadow duration-200"
-      )}
-    >
+      )}>
       <FlipCard
+        flipped={true}
+        setFlipped={() => {}}
         isDragging={isDragging}
-        front={<p>{`Front Content ${card._id}`}</p>}
-        back={<p>Back Content</p>}
+        front={<div className="size-24 bg-red-500"></div>}
+        back={<div className="size-24 bg-blue-500"></div>}
         card={card}
         setCard={setCard}
       />
