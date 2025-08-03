@@ -11,22 +11,29 @@ import { RandomCard } from "./page";
 import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
 export type PlayerWindowProps = HTMLAttributes<HTMLDivElement> & {
-  user: UserType;
+  user: string;
+  length: number;
 };
-export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
-  let cards: CardType[] = [];
-  let playerName = "No Player";
-  if (user) {
-    playerName = user.name;
-    cards = useQuery(api.cards.getPlayersCards, { userId: user._id }) ?? [];
-  }
+
+export const mockCard: CardType = {
+  _id: "card_123" as any,
+  _creationTime: Date.now(),
+  type: "spade",
+  playerId: "user_456" as any,
+  visible: true,
+  x: 10,
+  y: 20,
+  z: 1,
+};
+
+export const PlayerWindow = ({ user, length, ...props }: PlayerWindowProps) => {
+  const cards: CardType[] = Array.from({ length: length }).map(() => mockCard);
 
   return (
     <WindowContainer
       {...props}
-      className={cn("w-min min-w-[250px] bg-white", props.className)}
-    >
-      <WindowHeader className="px-2">{playerName}</WindowHeader>
+      className={cn("w-min min-w-[250px] bg-white", props.className)}>
+      <WindowHeader className="px-2">{user}</WindowHeader>
       <WindowContent className="flex-row">
         <div className="relative h-16 w-16 select-none">
           <p className="absolute right-0 bottom-0 z-50 w-min whitespace-nowrap bg-secondary p-1 py-0 text-white">
