@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import type { CardType } from "@/utils/types";
 import Board from "./Board";
+import { ShuffleButton } from "./ShuffleButton";
 
 export default function NewUIPage() {
   return (
@@ -20,6 +21,7 @@ export default function NewUIPage() {
       <AnimatePresence mode="wait">
         <Board />
       </AnimatePresence>
+      <ShuffleButton />
     </div>
   );
 }
