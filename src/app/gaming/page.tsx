@@ -11,7 +11,7 @@ import {
 import type { Id } from "@root/convex/_generated/dataModel";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import type { CardType } from "@/utils/types";
+import type { CardType, UserType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
 import Hand from "./_components/Hand";
 
@@ -48,11 +48,51 @@ const initialCards: CardType[] = [
   },
 ];
 
+const dummyPlayer: UserType = {
+  _id: "player-1" as Id<"users">,
+  name: "Player 1",
+  _creationTime: 0,
+};
+
 const initialHand: CardType[] = [];
 
 export default function GamingPage() {
-  const [hand, setHand] = useState<CardType[]>(initialHand);
-  const [canvasCards, setCanvasCards] = useState<CardType[]>(initialCards);
+  const [cards, setCards] = useState<CardType[]>([
+    ...initialCards,
+    ...initialHand,
+  ]);
+
+  // const { player } = useLocalPlayer();
+  const player = dummyPlayer;
+
+  const hand = cards.filter((c) => c.playerId === player?._id);
+  const canvasCards = cards.filter((c) => c.playerId !== player?._id);
+
+  console.log("hand", hand);
+
+  const setHand = (update: (prev: CardType[]) => CardType[]) => {
+    setCards((prevCards) => {
+      const prevHand = prevCards.filter((c) => c.playerId === player?._id);
+      const updatedHand = update(prevHand);
+      const nonHandCards = prevCards.filter((c) => c.playerId !== player?._id);
+      return [
+        ...nonHandCards,
+        ...updatedHand.map((c) => ({
+          ...c,
+          playerId: player?._id ? player._id : null,
+        })),
+      ];
+    });
+  };
+
+  const setCanvasCards = (update: (prev: CardType[]) => CardType[]) => {
+    setCards((prevCards) => {
+      const prevCanvas = prevCards.filter((c) => c.playerId !== player?._id);
+      const updatedCanvas = update(prevCanvas);
+      const handCards = prevCards.filter((c) => c.playerId === player?._id);
+      return [...updatedCanvas, ...handCards];
+    });
+  };
 
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor, {
@@ -70,26 +110,31 @@ export default function GamingPage() {
     const [activeId, overId] = [active.id as Id<"cards">, String(over.id)];
 
     if (overId === "hand") {
+      if (!player) return;
+
       setHand((prev) => {
-        const card = canvasCards.find((c) => c._id === activeId);
-        if (!card || prev.some((c) => c._id === activeId)) return prev;
-        return [...prev, card];
+        const card = cards.find((c) => c._id === activeId);
+        if (card) {
+          if (prev.some((c) => c._id === card._id)) return prev;
+          card.playerId = player._id;
+          card.x = 0;
+          card.y = 0;
+          return [...prev, card];
+        }
+        return prev;
       });
       setCanvasCards((prev) => prev.filter((c) => c._id !== activeId));
     } else if (overId === "canvas") {
       const mouseX = active.rect?.current?.translated?.left ?? 200;
       const mouseY = active.rect?.current?.translated?.top ?? 200;
 
-      const card: CardType = {
-        _id: activeId,
-        x: mouseX,
-        y: mouseY,
-        _creationTime: 0,
-        type: "", // TODO: WHAT THE FUCK
-        playerId: null,
-        visible: false,
-        z: 0,
-      };
+      const card = cards.find((c) => c._id === activeId);
+      if (card) {
+        card.playerId = null;
+        card.x = mouseX;
+        card.y = mouseY;
+      }
+      if (!card) return;
       setCanvasCards((prev) => [
         ...prev.filter((c) => c._id !== activeId),
         card,

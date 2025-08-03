@@ -1,7 +1,6 @@
 "use client";
 
 import { useDroppable } from "@dnd-kit/core";
-import type React from "react";
 import { cn } from "@/components/libs/utils";
 import type { CardType } from "@/utils/types";
 import HandCard from "./HandCard";
@@ -9,7 +8,7 @@ import HandCard from "./HandCard";
 export type HandProps = {
   id: string;
   hand: CardType[];
-  setHand: React.Dispatch<React.SetStateAction<CardType[]>>;
+  setHand: (update: (prev: CardType[]) => CardType[]) => void;
 };
 
 export default function Hand({ id, hand, setHand }: HandProps) {

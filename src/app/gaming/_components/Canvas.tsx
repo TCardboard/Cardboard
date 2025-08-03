@@ -4,7 +4,7 @@ import CanvasCard from "./CanvasCard";
 
 type CanvasProps = {
   cards: CardType[];
-  setCards: (cards: CardType[]) => void;
+  setCards: (update: (prev: CardType[]) => CardType[]) => void;
 };
 
 export default function Canvas({ cards, setCards }: CanvasProps) {
@@ -21,7 +21,9 @@ export default function Canvas({ cards, setCards }: CanvasProps) {
           id={card._id}
           card={card}
           setCard={(updatedCard) =>
-            setCards(cards.map((c) => (c._id === card._id ? updatedCard : c)))
+            setCards((prev) =>
+              prev.map((c) => (c._id === card._id ? updatedCard : c))
+            )
           }
         />
       ))}
