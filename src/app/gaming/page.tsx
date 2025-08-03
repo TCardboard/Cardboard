@@ -8,8 +8,9 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
+import { api } from "@root/convex/_generated/api";
 import type { Id } from "@root/convex/_generated/dataModel";
-import { useState } from "react";
+import { useMutation, useQuery } from "convex/react";
 import { Button } from "@/components/ui/button";
 import type { CardType, UserType } from "@/utils/types";
 import Canvas from "./_components/Canvas";
@@ -57,10 +58,8 @@ const dummyPlayer: UserType = {
 const initialHand: CardType[] = [];
 
 export default function GamingPage() {
-  const [cards, setCards] = useState<CardType[]>([
-    ...initialCards,
-    ...initialHand,
-  ]);
+  const cards = useQuery(api.cards.getAllCards) ?? [];
+  const updateAllCards = useMutation(api.cards.updateAllCards);
 
   // const { player } = useLocalPlayer();
   const player = dummyPlayer;
@@ -71,27 +70,17 @@ export default function GamingPage() {
   console.log("hand", hand);
 
   const setHand = (update: (prev: CardType[]) => CardType[]) => {
-    setCards((prevCards) => {
-      const prevHand = prevCards.filter((c) => c.playerId === player?._id);
-      const updatedHand = update(prevHand);
-      const nonHandCards = prevCards.filter((c) => c.playerId !== player?._id);
-      return [
-        ...nonHandCards,
-        ...updatedHand.map((c) => ({
-          ...c,
-          playerId: player?._id ? player._id : null,
-        })),
-      ];
-    });
+    const newHand = update(hand);
+    const newCards = [...newHand, ...canvasCards];
+    const newStrippedCards = newCards.map(({ _creationTime, ...rest }) => rest);
+    updateAllCards({ newCards: newStrippedCards });
   };
 
   const setCanvasCards = (update: (prev: CardType[]) => CardType[]) => {
-    setCards((prevCards) => {
-      const prevCanvas = prevCards.filter((c) => c.playerId !== player?._id);
-      const updatedCanvas = update(prevCanvas);
-      const handCards = prevCards.filter((c) => c.playerId === player?._id);
-      return [...updatedCanvas, ...handCards];
-    });
+    const newCanvas = update(canvasCards);
+    const newCards = [...newCanvas, ...hand];
+    const newStrippedCards = newCards.map(({ _creationTime, ...rest }) => rest);
+    updateAllCards({ newCards: newStrippedCards });
   };
 
   const mouseSensor = useSensor(MouseSensor);
