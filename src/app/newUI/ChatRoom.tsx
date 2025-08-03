@@ -64,43 +64,76 @@ export const ChatRoom = () => {
   if (!player) return null;
 
   return (
-    <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300">
-      <WindowHeader
-        className="flex justify-between px-2 pr-1 hover:cursor-pointer"
-        onClick={handleTogglePosition}
-      >
-        <span className="pl-0">Game Room</span>
-        <XpWindowControls
-          controls={["minimize", "maximize", "close"]}
-          onMinimize={handleMinimize}
-          onMaximize={handleMaximize}
-          onClose={handleClose}
-        />
-      </WindowHeader>
-      <WindowContent
-        className={cn(isMovedDown && "min-h-0 py-0 transition *:hidden")}
-      >
-        <div
-          className={cn(
-            "max-h-[200px] min-h-[200px] space-y-1 overflow-y-scroll",
-            isMovedDown && "min-h-0 py-0 transition"
-          )}
+    <>
+      <style>{`
+        /* Retro Windows XP scrollbar */
+        .xp-scrollbar::-webkit-scrollbar {
+          width: 16px;
+          background-color: #c0c0c0;
+        }
+        .xp-scrollbar::-webkit-scrollbar-track {
+          background-color: #c0c0c0;
+          border-left: 2px solid #ffffff;
+          border-top: 2px solid #ffffff;
+          border-right: 2px solid #808080;
+          border-bottom: 2px solid #808080;
+          box-sizing: border-box;
+        }
+        .xp-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #000080;
+          border-left: 2px solid #000000;
+          border-top: 2px solid #000000;
+          border-right: 2px solid #c0c0c0;
+          border-bottom: 2px solid #c0c0c0;
+          box-sizing: border-box;
+        }
+        .xp-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #0000ff;
+        }
+        .xp-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #000080 #c0c0c0;
+        }
+      `}</style>
+
+      <WindowContainer className="absolute right-0 bottom-0 size-full h-min w-[300px] overflow-hidden transition-transform duration-300">
+        <WindowHeader
+          className="flex justify-between px-2 pr-1 hover:cursor-pointer"
+          onClick={handleTogglePosition}
         >
-          {(messages ?? []).map((chat, index) => (
-            <div key={index} className="w-full break-words">
-              <span className="font-bold">{chat.user}: </span>
-              <span className="whitespace-pre-wrap break-words">{chat.body}</span>
-            </div>
-          ))}
-          <div ref={chatEndRef} />
-        </div>
-        <Input
-          value={inputValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
-        />
-      </WindowContent>
-    </WindowContainer>
+          <span className="pl-0">Game Room</span>
+          <XpWindowControls
+            controls={["minimize", "maximize", "close"]}
+            onMinimize={handleMinimize}
+            onMaximize={handleMaximize}
+            onClose={handleClose}
+          />
+        </WindowHeader>
+        <WindowContent
+          className={cn(isMovedDown && "min-h-0 py-0 transition *:hidden")}
+        >
+          <div
+            className={cn(
+              "max-h-[200px] min-h-[200px] space-y-1 overflow-y-scroll xp-scrollbar",
+              isMovedDown && "min-h-0 py-0 transition"
+            )}
+          >
+            {(messages ?? []).map((chat, index) => (
+              <div key={index} className="w-full break-words">
+                <span className="font-bold">{chat.user}: </span>
+                <span className="whitespace-pre-wrap break-words">{chat.body}</span>
+              </div>
+            ))}
+            <div ref={chatEndRef} />
+          </div>
+          <Input
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Type a message..."
+          />
+        </WindowContent>
+      </WindowContainer>
+    </>
   );
 };
