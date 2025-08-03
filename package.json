@@ -30,6 +30,7 @@
     "@xyflow/react": "^12.8.2",
     "better-auth": "^1.2.10",
     "class-variance-authority": "^0.7.1",
+    "client-only": "^0.0.1",
     "clsx": "^2.1.1",
     "convex": "^1.25.4",
     "drizzle-orm": "^0.41.0",

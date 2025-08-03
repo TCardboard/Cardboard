@@ -1,5 +1,4 @@
 import { ConvexClientProvider } from "@/providers/ConvexProvider";
-import { RoutingDevTools } from "@/utils/devtools/DevToolsProvider";
 import "@xyflow/react/dist/style.css";
 import type { Metadata } from "next";
 import { Geist_Mono, Manrope } from "next/font/google";
@@ -30,7 +29,6 @@ export default function RootLayout({
       <body
         className={`${manrope.className} ${geistMono.variable} h-dhw w-dvw antialiased`}
       >
-        {process.env.NODE_ENV === "development" && <RoutingDevTools />}
         <ConvexClientProvider>{children}</ConvexClientProvider>
       </body>
     </html>
