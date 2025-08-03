@@ -19,10 +19,7 @@ export const PlayerWindow = ({ user, ...props }: PlayerWindowProps) => {
   if (user) {
     playerName = user.name;
     cards = useQuery(api.cards.getPlayersCards, { userId: user._id }) ?? [];
-    console.log(user._id);
   }
-
-  console.log(cards);
 
   return (
     <WindowContainer

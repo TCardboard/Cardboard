@@ -21,16 +21,12 @@ import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 export default function Board() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
 
-  console.log("cards", cards);
-
   const updateAllCards = useMutation(api.cards.updateAllCards);
   const { player, setPlayer } = useLocalPlayer();
 
   const hand = cards.filter((c) => c.playerId === player?._id);
   const canvasCards = cards.filter((c) => c.playerId !== player?._id);
-
-  console.log("hand", hand);
-
+  
   const setHand = (update: (prev: CardType[]) => CardType[]) => {
     const newHand = update(hand);
     const newCards = [...newHand, ...canvasCards];
