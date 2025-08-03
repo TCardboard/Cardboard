@@ -22,6 +22,7 @@ import { WindowContainer, WindowContent, WindowHeader } from "./Window";
 
 export default function Board() {
   const cards = useQuery(api.cards.getAllCards) ?? [];
+  const moveCardToHand = useMutation(api.cards.moveCardToHand);
 
   const updateAllCards = useMutation(api.cards.updateAllCards);
   const { player, setPlayer } = useLocalPlayer();
@@ -56,23 +57,15 @@ export default function Board() {
     const { active, over } = event;
     if (!over) return;
 
-    const [activeId, overId] = [active.id as Id<"cards">, String(over.id)];
+    const [activeId, overId] = [active.id, String(over.id)];
+
+    console.log("activeId", activeId, "overId", overId);
+    console.log("active", active);
 
     if (overId === "hand") {
       if (!player) return;
-
-      setHand((prev) => {
-        const card = cards.find((c) => c._id === activeId);
-        if (card) {
-          if (prev.some((c) => c._id === card._id)) return prev;
-          card.playerId = player._id;
-          card.x = 0;
-          card.y = 0;
-          return [...prev, card];
-        }
-        return prev;
-      });
-      setCanvasCards((prev) => prev.filter((c) => c._id !== activeId));
+      console.log("Dragging to hand");
+      moveCardToHand({ cardId: activeId as Id<"cards">, playerId: player._id });
     } else if (overId === "canvas") {
       const mouseX = active.rect?.current?.translated?.left ?? 0;
       const mouseY = active.rect?.current?.translated?.top ?? 0;

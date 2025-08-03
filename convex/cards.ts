@@ -48,7 +48,7 @@ export const moveCardToTop = mutation({
     await ctx.db.patch(args.cardId, { z: maxZIndex + 1 });
   },
 });
- 
+
 // Shuffle all cards in the database: randomize their z-index and set (x, y) to (200, 100)
 export const shuffleCards = mutation({
   handler: async (ctx) => {
@@ -109,5 +109,16 @@ export const updateAllCards = mutation({
     for (const id of existingIds) {
       await ctx.db.delete(id);
     }
+  },
+});
+
+// Move a single card to a player's hand (or null)
+export const moveCardToHand = mutation({
+  args: {
+    cardId: v.id("cards"),
+    playerId: v.union(v.id("users"), v.null()),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.cardId, { playerId: args.playerId });
   },
 });
