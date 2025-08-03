@@ -3,7 +3,7 @@ import type { Id } from "@root/convex/_generated/dataModel";
 import { useMutation } from "convex/react";
 import Image from "next/image";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import Button from "@/components/button";
 import { Input } from "@/components/ui/input";
 import { useLocalPlayer } from "@/libs/utils/hooks";
 
@@ -50,9 +50,7 @@ export const EnterGame = () => {
               onChange={(e) => setInputRoom(e.target.value)}
             />
           </div>
-          <Button className="mt-2" onClick={handleSetName}>
-            Enter
-          </Button>
+          <Button label="Enter" className="bg-blue-600 text-white hover:bg-blue-700" onClick={handleSetName} />
         </div>
       </div>
     </div>
