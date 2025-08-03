@@ -1,7 +1,7 @@
 "use client";
 
-import { cn } from "@/components/libs/utils";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { cn } from "@/components/libs/utils";
 
 type ControlButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   symbol?: string;
